@@ -13,9 +13,7 @@ namespace RenamingMp3Songs
         {
             //string songPath = @"c:\temp\";
             //string songPath = @"D:\";
-            //string songPath = @"D:\Music\80s90s";
-            //string songPath = @"C:\Users\phenry\Music\EuroDance\New.202112";
-            string songPath = @"C:\Users\phenry\Music\EuroDance";
+            string songPath = @"D:\Music\80s90s";
             ProcessSongPath(songPath);
             Console.ReadLine();
         }
@@ -71,8 +69,12 @@ namespace RenamingMp3Songs
                 }
                 else
                 {
+                    Console.WriteLine();
+                    Console.WriteLine();
                     Console.WriteLine($"*************** Skipping {songFilename} since after renaming, there is a name conflict, figure out which song you want first.");
                     Console.ReadLine();
+                    Console.WriteLine();
+                    Console.WriteLine();
                 }
             }
         }
@@ -170,4 +172,3 @@ namespace RenamingMp3Songs
         }
     }
 }
-
