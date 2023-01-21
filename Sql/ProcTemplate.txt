@@ -1,0 +1,30 @@
+IF EXISTS (SELECT 1 FROM sys.procedures WHERE name = 'usp_getXXXXXXXXXXXXXXXX')
+DROP PROCEDURE [dbo].[usp_getXXXXXXXXXXXXXXXX]
+GO
+
+CREATE PROCEDURE usp_getXXXXXXXXXXXXXXXX
+	@CustomerId BIGINT
+	,@ReportDate DATETIME
+AS 
+
+create table #CurrentPaymentScheduleJournal
+(
+PaymentScheduleId bigint primary key not null
+,OutstandingBalance decimal(18,2) not null
+,DaysOld decimal(20,2) not null
+,StatusId int not null
+,DueDate DATETIME NOT NULL
+,InvoiceId BIGINT NOT NULL
+,PaymentScheduleCount INT NOT NULL
+)
+
+SELECT 
+	ps.Id
+INTO #PaymentSchedules
+FROM
+	PaymentSchedule ps
+	inner join Invoice i on ps.InvoiceId = i.Id
+WHERE
+	i.CustomerId = @CustomerId
+
+;WITH CTE_RankedJournals AS (
