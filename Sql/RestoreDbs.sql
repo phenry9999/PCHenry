@@ -6,132 +6,20 @@ declare @lastBackupFilePosition int
 declare @dbBackupDate varchar(255) 
 declare @dbName varchar(100)
 
-set @dbName = 'FusebillMasterLocal'
+set @dbName = 'MasterLocal'
 print 'Restoring to ' + @dbName
-insert #BackupDBData Exec ('RESTORE HEADERONLY FROM  DISK = N''d:\FusebillDB\' + @dbName + '.bak''') 
+insert #BackupDBData Exec ('RESTORE HEADERONLY FROM  DISK = N''d:\DB\' + @dbName + '.bak''') 
 set @lastBackupFilePosition = (select max(Position) from #BackupDBData)
 set @dbBackupDate = (select BackupFinishDate from #BackupDBData where Position = @lastBackupFilePosition)
 print 'restoring from file position = ' + cast(@lastBackupFilePosition as varchar) + ' created on ' + cast(@dbBackupDate as varchar(255))
 truncate table #BackupDBData
 set @restoreSql = 'ALTER DATABASE [' + @dbName + '] SET SINGLE_USER WITH ROLLBACK IMMEDIATE '
 --exec sp_executesql @restoreSql
-set @restoreSql = 'RESTORE DATABASE ' + @dbName + ' FROM DISK = N''d:\FusebillDB\' + @dbName + '.bak'' WITH FILE = ' + convert(varchar, @lastBackupFilePosition) + ', MOVE ''' + @dbName +''' TO ''c:\FusebillDB\' + @dbName + '.mdf'', MOVE ''' + @dbName + ''' TO ''c:\FusebillDB\' + @dbName + '.ldf'', NOUNLOAD, REPLACE, STATS = 10 '
---exec sp_executesql @restoreSql
-set @restoreSql = 'ALTER DATABASE [' + @dbName + '] SET MULTI_USER '
---exec sp_executesql @restoreSql
-
-set @dbName = 'ElmahDBLocal'
-print 'Restoring to ' + @dbName
-insert #BackupDBData Exec ('RESTORE HEADERONLY FROM  DISK = N''d:\FusebillDB\' + @dbName + '.bak''') 
-set @lastBackupFilePosition = (select max(Position) from #BackupDBData)
-set @dbBackupDate = (select BackupFinishDate from #BackupDBData where Position = @lastBackupFilePosition)
-print 'restoring from file position = ' + cast(@lastBackupFilePosition as varchar) + ' created on ' + cast(@dbBackupDate as varchar(255))
-truncate table #BackupDBData
-set @restoreSql = 'ALTER DATABASE [' + @dbName + '] SET SINGLE_USER WITH ROLLBACK IMMEDIATE '
---exec sp_executesql @restoreSql
-set @restoreSql = 'RESTORE DATABASE ' + @dbName + ' FROM DISK = N''d:\FusebillDB\' + @dbName + '.bak'' WITH FILE = ' + convert(varchar, @lastBackupFilePosition) + ', MOVE ''' + @dbName +''' TO ''c:\FusebillDB\' + @dbName + '.mdf'', MOVE ''' + @dbName + ''' TO ''c:\FusebillDB\' + @dbName + '.ldf'', NOUNLOAD, REPLACE, STATS = 10 '
---exec sp_executesql @restoreSql
-set @restoreSql = 'ALTER DATABASE [' + @dbName + '] SET MULTI_USER '
---exec sp_executesql @restoreSql
-
-set @dbName = 'fb_CommPlatform_trinity'
-print 'Restoring to ' + @dbName
-insert #BackupDBData Exec ('RESTORE HEADERONLY FROM  DISK = N''d:\FusebillDB\' + @dbName + '.bak''') 
-set @lastBackupFilePosition = (select max(Position) from #BackupDBData)
-set @dbBackupDate = (select BackupFinishDate from #BackupDBData where Position = @lastBackupFilePosition)
-print 'restoring from file position = ' + cast(@lastBackupFilePosition as varchar) + ' created on ' + cast(@dbBackupDate as varchar(255))
-truncate table #BackupDBData
-set @restoreSql = 'ALTER DATABASE [' + @dbName + '] SET SINGLE_USER WITH ROLLBACK IMMEDIATE '
---exec sp_executesql @restoreSql
-set @restoreSql = 'RESTORE DATABASE ' + @dbName + ' FROM DISK = N''d:\FusebillDB\' + @dbName + '.bak'' WITH FILE = ' + convert(varchar, @lastBackupFilePosition) + ', MOVE ''' + @dbName +''' TO ''c:\FusebillDB\' + @dbName + '.mdf'', MOVE ''' + @dbName + ''' TO ''c:\FusebillDB\' + @dbName + '.ldf'', NOUNLOAD, REPLACE, STATS = 10 '
---exec sp_executesql @restoreSql
-set @restoreSql = 'ALTER DATABASE [' + @dbName + '] SET MULTI_USER '
---exec sp_executesql @restoreSql
-
-set @dbName = 'FBReportingLocal'
-print 'Restoring to ' + @dbName
-insert #BackupDBData Exec ('RESTORE HEADERONLY FROM  DISK = N''d:\FusebillDB\' + @dbName + '.bak''') 
-set @lastBackupFilePosition = (select max(Position) from #BackupDBData)
-set @dbBackupDate = (select BackupFinishDate from #BackupDBData where Position = @lastBackupFilePosition)
-print 'restoring from file position = ' + cast(@lastBackupFilePosition as varchar) + ' created on ' + cast(@dbBackupDate as varchar(255))
-truncate table #BackupDBData
-set @restoreSql = 'ALTER DATABASE [' + @dbName + '] SET SINGLE_USER WITH ROLLBACK IMMEDIATE '
---exec sp_executesql @restoreSql
-set @restoreSql = 'RESTORE DATABASE ' + @dbName + ' FROM DISK = N''d:\FusebillDB\' + @dbName + '.bak'' WITH FILE = ' + convert(varchar, @lastBackupFilePosition) + ', MOVE ''' + @dbName +''' TO ''c:\FusebillDB\' + @dbName + '.mdf'', MOVE ''' + @dbName + ''' TO ''c:\FusebillDB\' + @dbName + '.ldf'', NOUNLOAD, REPLACE, STATS = 10 '
---exec sp_executesql @restoreSql
-set @restoreSql = 'ALTER DATABASE [' + @dbName + '] SET MULTI_USER '
---exec sp_executesql @restoreSql
-
-set @dbName = 'fusebillPaymentRouter'
-print 'Restoring to ' + @dbName
-insert #BackupDBData Exec ('RESTORE HEADERONLY FROM  DISK = N''d:\FusebillDB\' + @dbName + '.bak''') 
-set @lastBackupFilePosition = (select max(Position) from #BackupDBData)
-set @dbBackupDate = (select BackupFinishDate from #BackupDBData where Position = @lastBackupFilePosition)
-print 'restoring from file position = ' + cast(@lastBackupFilePosition as varchar) + ' created on ' + cast(@dbBackupDate as varchar(255))
-truncate table #BackupDBData
-set @restoreSql = 'ALTER DATABASE [' + @dbName + '] SET SINGLE_USER WITH ROLLBACK IMMEDIATE '
---exec sp_executesql @restoreSql
-set @restoreSql = 'RESTORE DATABASE ' + @dbName + ' FROM DISK = N''d:\FusebillDB\' + @dbName + '.bak'' WITH FILE = ' + convert(varchar, @lastBackupFilePosition) + ', MOVE ''' + @dbName +''' TO ''c:\FusebillDB\' + @dbName + '.mdf'', MOVE ''' + @dbName + ''' TO ''c:\FusebillDB\' + @dbName + '.ldf'', NOUNLOAD, REPLACE, STATS = 10 '
---exec sp_executesql @restoreSql
-set @restoreSql = 'ALTER DATABASE [' + @dbName + '] SET MULTI_USER '
---exec sp_executesql @restoreSql
-
-set @dbName = 'FusebillSession'
-print 'Restoring to ' + @dbName
-insert #BackupDBData Exec ('RESTORE HEADERONLY FROM  DISK = N''d:\FusebillDB\' + @dbName + '.bak''') 
-set @lastBackupFilePosition = (select max(Position) from #BackupDBData)
-set @dbBackupDate = (select BackupFinishDate from #BackupDBData where Position = @lastBackupFilePosition)
-print 'restoring from file position = ' + cast(@lastBackupFilePosition as varchar) + ' created on ' + cast(@dbBackupDate as varchar(255))
-truncate table #BackupDBData
-set @restoreSql = 'ALTER DATABASE [' + @dbName + '] SET SINGLE_USER WITH ROLLBACK IMMEDIATE '
---exec sp_executesql @restoreSql
-set @restoreSql = 'RESTORE DATABASE ' + @dbName + ' FROM DISK = N''d:\FusebillDB\' + @dbName + '.bak'' WITH FILE = ' + convert(varchar, @lastBackupFilePosition) + ', MOVE ''' + @dbName +''' TO ''c:\FusebillDB\' + @dbName + '.mdf'', MOVE ''' + @dbName + ''' TO ''c:\FusebillDB\' + @dbName + '.ldf'', NOUNLOAD, REPLACE, STATS = 10 '
---exec sp_executesql @restoreSql
-set @restoreSql = 'ALTER DATABASE [' + @dbName + '] SET MULTI_USER '
---exec sp_executesql @restoreSql
-
-set @dbName = 'SSISDB'
-print 'Restoring to ' + @dbName
-insert #BackupDBData Exec ('RESTORE HEADERONLY FROM  DISK = N''d:\FusebillDB\' + @dbName + '.bak''') 
-set @lastBackupFilePosition = (select max(Position) from #BackupDBData)
-set @dbBackupDate = (select BackupFinishDate from #BackupDBData where Position = @lastBackupFilePosition)
-print 'restoring from file position = ' + cast(@lastBackupFilePosition as varchar) + ' created on ' + cast(@dbBackupDate as varchar(255))
-truncate table #BackupDBData
-set @restoreSql = 'ALTER DATABASE [' + @dbName + '] SET SINGLE_USER WITH ROLLBACK IMMEDIATE '
---exec sp_executesql @restoreSql
-set @restoreSql = 'RESTORE DATABASE ' + @dbName + ' FROM DISK = N''d:\FusebillDB\' + @dbName + '.bak'' WITH FILE = ' + convert(varchar, @lastBackupFilePosition) + ', MOVE ''' + @dbName +''' TO ''c:\FusebillDB\' + @dbName + '.mdf'', MOVE ''' + @dbName + ''' TO ''c:\FusebillDB\' + @dbName + '.ldf'', NOUNLOAD, REPLACE, STATS = 10 '
---exec sp_executesql @restoreSql
-set @restoreSql = 'ALTER DATABASE [' + @dbName + '] SET MULTI_USER '
---exec sp_executesql @restoreSql
-
-set @dbName = 'Vault'
-print 'Restoring to ' + @dbName
-insert #BackupDBData Exec ('RESTORE HEADERONLY FROM  DISK = N''d:\FusebillDB\' + @dbName + '.bak''') 
-set @lastBackupFilePosition = (select max(Position) from #BackupDBData)
-set @dbBackupDate = (select BackupFinishDate from #BackupDBData where Position = @lastBackupFilePosition)
-print 'restoring from file position = ' + cast(@lastBackupFilePosition as varchar) + ' created on ' + cast(@dbBackupDate as varchar(255))
-truncate table #BackupDBData
-set @restoreSql = 'ALTER DATABASE [' + @dbName + '] SET SINGLE_USER WITH ROLLBACK IMMEDIATE '
---exec sp_executesql @restoreSql
-set @restoreSql = 'RESTORE DATABASE ' + @dbName + ' FROM DISK = N''d:\FusebillDB\' + @dbName + '.bak'' WITH FILE = ' + convert(varchar, @lastBackupFilePosition) + ', MOVE ''' + @dbName +''' TO ''c:\FusebillDB\' + @dbName + '.mdf'', MOVE ''' + @dbName + ''' TO ''c:\FusebillDB\' + @dbName + '.ldf'', NOUNLOAD, REPLACE, STATS = 10 '
---exec sp_executesql @restoreSql
-set @restoreSql = 'ALTER DATABASE [' + @dbName + '] SET MULTI_USER '
---exec sp_executesql @restoreSql
-
-set @dbName = 'WebLogsLocal'
-print 'Restoring to ' + @dbName
-insert #BackupDBData Exec ('RESTORE HEADERONLY FROM  DISK = N''d:\FusebillDB\' + @dbName + '.bak''') 
-set @lastBackupFilePosition = (select max(Position) from #BackupDBData)
-set @dbBackupDate = (select BackupFinishDate from #BackupDBData where Position = @lastBackupFilePosition)
-print 'restoring from file position = ' + cast(@lastBackupFilePosition as varchar) + ' created on ' + cast(@dbBackupDate as varchar(255))
-truncate table #BackupDBData
-set @restoreSql = 'ALTER DATABASE [' + @dbName + '] SET SINGLE_USER WITH ROLLBACK IMMEDIATE '
---exec sp_executesql @restoreSql
-set @restoreSql = 'RESTORE DATABASE ' + @dbName + ' FROM DISK = N''d:\FusebillDB\' + @dbName + '.bak'' WITH FILE = ' + convert(varchar, @lastBackupFilePosition) + ', MOVE ''' + @dbName +''' TO ''c:\FusebillDB\' + @dbName + '.mdf'', MOVE ''' + @dbName + ''' TO ''c:\FusebillDB\' + @dbName + '.ldf'', NOUNLOAD, REPLACE, STATS = 10 '
+set @restoreSql = 'RESTORE DATABASE ' + @dbName + ' FROM DISK = N''d:\DB\' + @dbName + '.bak'' WITH FILE = ' + convert(varchar, @lastBackupFilePosition) + ', MOVE ''' + @dbName +''' TO ''c:\DB\' + @dbName + '.mdf'', MOVE ''' + @dbName + ''' TO ''c:\DB\' + @dbName + '.ldf'', NOUNLOAD, REPLACE, STATS = 10 '
 --exec sp_executesql @restoreSql
 set @restoreSql = 'ALTER DATABASE [' + @dbName + '] SET MULTI_USER '
 --exec sp_executesql @restoreSql
 
 --back to making db usable\queryable
 drop table #BackupDBData 
-USE FusebillMasterLocal
+USE MasterLocal
