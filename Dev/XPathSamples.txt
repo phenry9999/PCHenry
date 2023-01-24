@@ -1,0 +1,30 @@
+//*[@id='formTableNavigation']//span[contains(@data-bind, 'text: pagingService.itemCount')]
+
+//*[@id='main-content-body']//span[text()='Export']
+
+//div[@id="customer"]//a[text()='Portal']
+
+//div[@id='customer']//input[@id='Username']
+
+//*[@id='formTableNavigation']//span[contains(@data-bind, 'text: pagingService.itemCount')]
+//span[contains(@class, 'text-right')]/following::span
+
+
+
+//span[contains(@pagingService.itemCount)]
+
+<span data-bind="text: pagingService.itemCount">1</span>
+
+
+
+//*[@id='customer']//div[contains(@class, 'm-card-bdy-section')]
+
+
+//*[@id='myModalLabel']//span[contains(@data-bind, 'text:exportAndScheduleModalTitle')]/../../../div[contains(@class, 'modal-body')]//div[contains(@class, 'export-success-top-padding')][2]/*[contains(text(), 'There was an error while trying to run the report, please try again.  If the error persists, please contact Fusebill support.')]
+
+//*[@id='FullCustomerDetails']/following-sibling::label[contains(., 'Full Customer Details')]
+
+
+
+--finding by attribute, in this case specifically placeholder
+//input[@placeholder='Gender']
