@@ -34,10 +34,10 @@ exec sp_spaceused N'dbo.AvalaraLog'
 */
 
 /*
-USE [FusebillMasterLocal]
+USE [MasterLocal]
 GO
-DBCC SHRINKDATABASE(N'FusebillMasterLocal' )
+DBCC SHRINKDATABASE(N'MasterLocal' )
 GO
-DBCC SHRINKFILE (N'FusebillMasterLocal' , 0, TRUNCATEONLY)
+DBCC SHRINKFILE (N'MasterLocal' , 0, TRUNCATEONLY)
 GO
 */
