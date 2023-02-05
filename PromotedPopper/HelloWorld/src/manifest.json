@@ -1,0 +1,9 @@
+{
+	"manifest_version": 3,
+	"name": "PCH Hello World",
+	"description": "First attempt at doing something useful and trying to get out of funk",
+	"version": "1.0",
+	"action": {
+	  "default_popup": "./popout/popout.html"
+	}
+  }
