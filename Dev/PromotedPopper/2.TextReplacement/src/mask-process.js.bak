@@ -1,0 +1,51 @@
+console.log('Running any-mask ...');
+
+const isMaskedKeyName = 'isAnyMaskEnabled';
+const maskEnabledClassName = 'any-mask-enabled';
+const blurCss = 'filter: blur(5px);';
+const textToMask = 'google';
+const regex = new RegExp(textToMask, 'gi');
+const sensitiveDataClassName = 'anymask-sensitive';
+
+// add CSS style to blur
+const style = document.createElement('style');
+style.appendChild(document.createTextNode(''));
+document.head.appendChild(style);
+
+style.sheet.insertRule(`.${maskEnabledClassName} .anymask-sensitive { ${blurCss} }`);
+
+getStoredMaskedStatus(isMasked => {
+  isMasked ? document.body.classList.add(maskEnabledClassName) : document.body.classList.remove(maskEnabledClassName);
+});
+
+Array.from(document.body.querySelectorAll('*'))
+  .filter(e => checkForMatch(e))
+  .forEach(e => {
+    console.log('Found an element: ', e);
+    if (e.innerHTML) {
+      // replace the keyword globally, g (all instances instead of just the first instance)
+      // and match as case-insensitive, i
+      e.innerHTML = e.innerHTML.replace(regex, 'REDACTED TEXT');
+    } else if (e.value) {
+      e.value = e.value.replace(regex, 'REDACTED TEXT');
+    }
+  });
+
+function checkForMatch(e) {
+  return (
+    (e.innerHTML && e.innerHTML.toLowerCase().indexOf(textToMask.toLowerCase()) > -1) ||
+    (e.value && e.value.toLowerCase().indexOf(textToMask.toLowerCase()) > -1)
+  );
+}
+
+function getStoredMaskedStatus(callback) {
+  chrome.storage.local.get(isMaskedKeyName, items => {
+    const isMasked = items[isMaskedKeyName];
+    if (isMasked && typeof isMasked !== 'boolean') {
+      // default to true
+      chrome.storage.local.set({ [isMaskedKeyName]: true }, () => callback(true));
+    } else {
+      callback(isMasked);
+    }
+  });
+}

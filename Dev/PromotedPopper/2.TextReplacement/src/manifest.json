@@ -1,0 +1,18 @@
+{
+	"name": "Text Replacement",
+	"description": "Text replacement example from Pluralsight",
+	"version": "1.0",
+	"manifest_version": 2,
+	"browser_action": {
+	  "default_popup": "./popout/popout.html"
+	},
+	"content_scripts":[
+		{
+			"matches": ["<all_urls>"],
+			"js": ["/mask-process.js"],
+			"run_at": "document_idle",
+			"all_frames": true
+		}
+	],
+	"permissions": ["activeTab"]
+  }

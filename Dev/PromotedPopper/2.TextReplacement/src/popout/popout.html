@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="popout.css">
+</head>
+
+<body>
+    <div id="main">
+        <section class="section">
+            <div class="card">
+                <div class="card-header">
+                    <p class="card-header-title">
+                        Mask Any Text
+                    </p>
+                </div>
+                <div class="card-content">
+                    <div class="field">
+                        <label for="toggleMasks" class="label">Toggle All Masks</label>
+                        <div class="control">
+                            <label class="switch">
+                                <input id="toggle-all-masks" type="checkbox" checked="true" />
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <button id="add-new-field">Add New Field</button>
+                    </div>
+                </div>
+                <div id="custom-fields" class="card-content">
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="popout.js"></script>
+
+</html>
