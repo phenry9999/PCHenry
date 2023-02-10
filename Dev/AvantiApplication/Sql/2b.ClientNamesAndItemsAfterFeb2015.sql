@@ -13,7 +13,8 @@ FROM            ClientFile INNER JOIN
 
 --specification specifically states after Feb 1st, 2015, I'm assuming this is not inclusive and therefore using > and not >=, I would certainly ask the PO if this assumption was indeed correct
 --there is a specific call out for items and quantities, but no requirement for order details, I would ask PO about this potential oversight?
-select CustomerOrdersAfterFeb2015.ClientName, i.ItemName, oi.Quantity
+select /***/ --I would use this for sql creation\debugging
+	CustomerOrdersAfterFeb2015.ClientName, i.ItemName, oi.Quantity	--these are the specific cols asked in the requirement
 from 
 (
 	select customers.ID as CustomerId, customers.ClientName, Orders.OrderID as OrderId
