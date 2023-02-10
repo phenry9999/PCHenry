@@ -5,12 +5,44 @@
     <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Assets\Avanti.ico</ApplicationIcon>
+    <Description>Avanti Systems Developer Position Interview Application</Description>
+    <Copyright>PCHenry.com 2023</Copyright>
+    <PackageProjectUrl>www.PCHenry.com</PackageProjectUrl>
+    <PackageIcon>Avanti.jpg</PackageIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Avanti.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Views\" />
     <Folder Include="ViewModels\" />
     <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\Avanti.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Avanti.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Avanti.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="Assets\AvantiLogoYellow.ARicohCompany.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\SplashAdvert.Yellow.HowWillAvantiSlingshotPrintMisHelpYourPrintShopSucceed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\TwitterBanner.StickiesThumbtackedToBlackBoard.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
