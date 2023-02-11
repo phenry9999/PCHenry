@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TableConversionUtility"
-        xmlns:Controls="clr-namespace:TableConversionUtility.Controls" x:Class="TableConversionUtility.MainWindow"
         mc:Ignorable="d"
         Title="Table Conversion Utility" Height="450" Width="800" Icon="/Assets/Avanti.jpg">
 	<Grid>
@@ -24,7 +23,6 @@
 		</StackPanel>
 		<StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal">
 			<ListBox/>
-			<Controls:EmployeeView/>
 		</StackPanel>
 	</Grid>
 </Window>
