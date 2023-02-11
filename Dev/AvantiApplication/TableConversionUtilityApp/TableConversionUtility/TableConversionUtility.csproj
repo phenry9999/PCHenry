@@ -13,34 +13,48 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Assets\Avanti.ico" />
+    <None Remove="Assets\Avanti.gif" />
+    <None Remove="Assets\Avanti.jpg" />
+    <None Remove="Assets\AvantiLogoYellow.ARicohCompany.png" />
+    <None Remove="Assets\SplashAdvert.Yellow.HowWillAvantiSlingshotPrintMisHelpYourPrintShopSucceed.png" />
+    <None Remove="Assets\TwitterBanner.StickiesThumbtackedToBlackBoard.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Avanti.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Avanti.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Avanti.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </Content>
+    <Content Include="Assets\AvantiLogoYellow.ARicohCompany.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\SplashAdvert.Yellow.HowWillAvantiSlingshotPrintMisHelpYourPrintShopSucceed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\TwitterBanner.StickiesThumbtackedToBlackBoard.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Views\" />
-    <Folder Include="ViewModels\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Assets\Avanti.gif">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <ProjectReference Include="..\TableConversionUtility.BusLogic\TableConversionUtility.BusLogic.csproj" />
+    <ProjectReference Include="..\TableConversionUtility.Data\TableConversionUtility.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Assets\Avanti.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\Avanti.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-    <None Update="Assets\AvantiLogoYellow.ARicohCompany.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\SplashAdvert.Yellow.HowWillAvantiSlingshotPrintMisHelpYourPrintShopSucceed.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\TwitterBanner.StickiesThumbtackedToBlackBoard.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
