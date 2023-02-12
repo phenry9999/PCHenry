@@ -4,13 +4,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TableConversionUtility.Data.Models;
 using TableConversionUtility.Data.Providers;
 using TableConversionUtility.Views;
 
 namespace TableConversionUtility.ViewModels
 {
-	public class EmployeesViewModel : ViewModelBase
+	public class MainWindowViewModel : ViewModelBase
 	{
 		private readonly IEmployeeDataProvider employeeDataProvider;
 		private EmployeeItemViewModel? selectedEmployee;
@@ -27,7 +26,7 @@ namespace TableConversionUtility.ViewModels
 			}
 		}
 
-		public EmployeesViewModel(IEmployeeDataProvider employeeDataProvider)
+		public MainWindowViewModel(IEmployeeDataProvider employeeDataProvider)
 		{
 			this.employeeDataProvider = employeeDataProvider;
 		}

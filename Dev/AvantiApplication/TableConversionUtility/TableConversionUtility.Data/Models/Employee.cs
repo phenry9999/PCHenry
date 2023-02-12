@@ -21,8 +21,10 @@ namespace TableConversionUtility.Data.Models
 		[StringLength(100, ErrorMessage = "Department name needs to be less than 100 characters to be valid.")]
 		public string? Department { get; set; }
 
-		[Range(1, 99, ErrorMessage = "Age range is 1 to 99 years old.")]
-		public int Age { get; set; }
+		//[Range(1, 99, ErrorMessage = "Age range is 1 to 99 years old.")]
+		//change the string datatype to an int if time permits
+		//public int? Age { get; set; }
+		public string Age { get; set; }
 
 		public Employee()
 		{

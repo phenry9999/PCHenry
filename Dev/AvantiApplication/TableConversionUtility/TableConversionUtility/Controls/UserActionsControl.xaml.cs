@@ -20,6 +20,7 @@ namespace TableConversionUtility.Controls
     /// </summary>
     public partial class UserActionsControl : UserControl
     {
+
         public UserActionsControl()
         {
             InitializeComponent();
