@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Assets\Avanti.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Avanti.gif" />
+    <None Remove="Assets\Avanti.jpg" />
+    <None Remove="Assets\AvantiLogoYellow.ARicohCompany.png" />
+    <None Remove="Assets\SplashAdvert.Yellow.HowWillAvantiSlingshotPrintMisHelpYourPrintShopSucceed.png" />
+    <None Remove="Assets\TwitterBanner.StickiesThumbtackedToBlackBoard.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Avanti.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Avanti.gif" />
+    <Resource Include="Assets\Avanti.jpg" />
+    <Resource Include="Assets\AvantiLogoYellow.ARicohCompany.png" />
+    <Resource Include="Assets\SplashAdvert.Yellow.HowWillAvantiSlingshotPrintMisHelpYourPrintShopSucceed.png" />
+    <Resource Include="Assets\TwitterBanner.StickiesThumbtackedToBlackBoard.png" />
+  </ItemGroup>
+
+</Project>
