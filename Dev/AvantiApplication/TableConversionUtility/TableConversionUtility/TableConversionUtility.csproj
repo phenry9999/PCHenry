@@ -32,12 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controls\" />
-    <Folder Include="Views\" />
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\TableConversionUtility.Data\TableConversionUtility.Data.csproj" />
   </ItemGroup>
 

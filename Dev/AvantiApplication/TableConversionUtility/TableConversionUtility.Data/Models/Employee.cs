@@ -14,6 +14,10 @@ namespace TableConversionUtility.Data.Models
 		[DisplayName("First Name")]
 		public string FirstName { get; set; }
 
+		//yes, I know, this is extra, just trying to show differientation between this model and the other ViewModel and they can be different
+		[DisplayName("Last Name")]
+		public string? LastName { get; set; }
+
 		[StringLength(100, ErrorMessage = "Department name needs to be less than 100 characters to be valid.")]
 		public string? Department { get; set; }
 

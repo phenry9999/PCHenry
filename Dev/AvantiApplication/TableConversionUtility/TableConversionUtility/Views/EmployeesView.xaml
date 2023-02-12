@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="TableConversionUtility.Views.EmployeesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TableConversionUtility.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="100"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<ListBox x:Name="EmmployeesList" Grid.Column="0" Margin="5"/>
+
+		<Grid Grid.Column="1">
+			<Grid Margin="55, 5, 5, 5">
+				<!--Put the F under the o in Sort-->
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="200"></ColumnDefinition>
+				</Grid.ColumnDefinitions>
+				<Label Grid.Column="0" Grid.Row="0" Margin="5">First Name</Label>
+				<TextBox Grid.Column="1" Grid.Row="0" Margin="5" d:Text="Martin"/>
+				<Label Grid.Column="0" Grid.Row="1" Margin="5">Department</Label>
+				<TextBox Grid.Column="1" Grid.Row="1" Margin="5" d:Text="Development"/>
+				<Label Grid.Column="0" Grid.Row="2" Margin="5">Age</Label>
+				<TextBox Grid.Column="1" Grid.Row="2" Margin="5"  d:Text="50"></TextBox>
+			</Grid>
+		</Grid>
+	</Grid>
+</UserControl>
