@@ -6,11 +6,14 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Assets\Avanti.ico</ApplicationIcon>
+    <Description>Avanti Systems Developer Position Interview Application</Description>
+    <Copyright>PCHenry.com 2023</Copyright>
+    <PackageProjectUrl>http://www.PCHenry.com</PackageProjectUrl>
+    <PackageIcon>Avanti.jpg</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Assets\Avanti.gif" />
-    <None Remove="Assets\Avanti.jpg" />
     <None Remove="Assets\AvantiLogoYellow.ARicohCompany.png" />
     <None Remove="Assets\SplashAdvert.Yellow.HowWillAvantiSlingshotPrintMisHelpYourPrintShopSucceed.png" />
     <None Remove="Assets\TwitterBanner.StickiesThumbtackedToBlackBoard.png" />
@@ -26,6 +29,23 @@
     <Resource Include="Assets\AvantiLogoYellow.ARicohCompany.png" />
     <Resource Include="Assets\SplashAdvert.Yellow.HowWillAvantiSlingshotPrintMisHelpYourPrintShopSucceed.png" />
     <Resource Include="Assets\TwitterBanner.StickiesThumbtackedToBlackBoard.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controls\" />
+    <Folder Include="Views\" />
+    <Folder Include="ViewModels\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TableConversionUtility.Data\TableConversionUtility.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\Avanti.jpg">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

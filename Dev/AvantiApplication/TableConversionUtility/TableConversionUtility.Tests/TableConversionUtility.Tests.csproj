@@ -18,7 +18,6 @@
   <ItemGroup>
     <ProjectReference Include="..\TableConversionUtility.BusLogic\TableConversionUtility.BusLogic.csproj" />
     <ProjectReference Include="..\TableConversionUtility.Data\TableConversionUtility.Data.csproj" />
-    <ProjectReference Include="..\TableConversionUtility\TableConversionUtility.csproj" />
   </ItemGroup>
 
 </Project>
