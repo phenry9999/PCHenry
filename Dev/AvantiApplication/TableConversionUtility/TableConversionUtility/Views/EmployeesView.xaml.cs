@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TableConversionUtility.Data.Providers;
+using TableConversionUtility.ViewModels;
 
 namespace TableConversionUtility.Views
 {
@@ -20,9 +22,19 @@ namespace TableConversionUtility.Views
     /// </summary>
     public partial class EmployeesView : UserControl
     {
+        private EmployeesViewModel viewModel;
+
         public EmployeesView()
         {
             InitializeComponent();
+            viewModel = new EmployeesViewModel(new EmployeeDataProvider());
+            DataContext = viewModel;
+            Loaded += EmployeesView_Loaded;
+        }
+
+        private async void EmployeesView_Loaded(object sender, RoutedEventArgs e)
+        {
+            await viewModel.LoadAsync();
         }
     }
 }

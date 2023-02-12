@@ -14,7 +14,9 @@
 			<ColumnDefinition Width="100"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
-		<ListBox x:Name="EmmployeesList" Grid.Column="0" Margin="5"/>
+		<ListBox x:Name="EmmployeesList" Grid.Column="0" Margin="5"
+				 ItemsSource="{Binding Employees}"
+				 DisplayMemberPath="FirstName"/>
 
 		<Grid Grid.Column="1">
 			<Grid Margin="55, 5, 5, 5">
