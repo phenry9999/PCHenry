@@ -15,7 +15,12 @@ namespace TableConversionUtility.Behaviors
 		{
 			DataImportParameters importer = new DataImportParameters(parameterLine);
 
-			return null;
+			if(importer.IsValidParameterLine)
+			{ }
+			else
+
+
+				return null;
 		}
 	}
 }
