@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,6 +55,19 @@ namespace TableConversionUtility.Views
 				model.Age = value;
 				RaisePropertyChanged();
 			}
+		}
+	}
+
+	public class EmployeeDistinctComparer : IEqualityComparer<EmployeeItemViewModel>
+	{
+		public bool Equals(EmployeeItemViewModel? x, EmployeeItemViewModel? y)
+		{
+			return x.FirstName.ToLower() == y.FirstName.ToLower();
+		}
+
+		public int GetHashCode([DisallowNull] EmployeeItemViewModel obj)
+		{
+			return obj.FirstName.GetHashCode();
 		}
 	}
 }

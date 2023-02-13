@@ -68,6 +68,8 @@ FirstName Department Age Mary 'Human Resources' 25 George Development 36
 
 		public List<string> RowData { get; set; }
 
+		public List<List<string>> ContentData { get; set; }
+
 		public DataImportParameters(string parameterLine)
 		{
 			ArgumentNullException.ThrowIfNull(parameterLine);
@@ -90,6 +92,26 @@ FirstName Department Age Mary 'Human Resources' 25 George Development 36
 
 			ImportData = GetData("ImportData", matches);
 			ParseImportData(Headings, RowData, ImportData);
+			PopulateContentData(Headings, RowData);
+		}
+
+		private void PopulateContentData(List<string> headings, List<string> rowData)
+		{
+			ContentData = new List<List<string>>();
+			int contentDataRowCount = rowData.Count / headings.Count;
+
+			for(int i = 0; i < contentDataRowCount; i++)
+			{
+				List<string> currentRow = new List<string>(headings.Count);
+
+				for(int j = 0; j < headings.Count; j++)
+				{
+					int dataRowIndex = j + (i * headings.Count);
+					currentRow.Add(rowData[dataRowIndex]);
+				}
+
+				ContentData.Add(currentRow);
+			}
 		}
 
 		private void ParseImportData(List<string>? headings, List<string>? rowData, string? importData)
@@ -101,30 +123,39 @@ FirstName Department Age Mary 'Human Resources' 25 George Development 36
 
 			try
 			{
-				for(int i = 0; i < RowCount; i++)
+				int wordCount = 0;
+				while(!string.IsNullOrEmpty(importData))
 				{
-					for(int j = 0; j < ColumnCount; j++)
+					//loop through each piece\part, I know this is not the most efficient way,
+					//but it's late, I'm tired, and I want to prove I can do this :> and I know this will work today
+					var regEx = new Regex(importDataPattern);
+					var matches = regEx.Matches(importData);
+
+					var nextQuotedWord = string.Empty;
+
+					//the regex isn't perfect, if there is one piece\part left, it's not matching, but it's still there, just grab it
+					if(matches.Count() > 0)
 					{
-
-						//loop through each parameter, I know this is not the most efficient way,
-						//but it's late, I'm tired, and I want to prove I can do this :> and I know this will work today
-						var regEx = new Regex(importDataPattern);
-						var matches = regEx.Matches(importData);
-
-						var nextQuotedWord = matches.First().Groups["Word"].Value;
-						var nextWord = nextQuotedWord.Replace("\"", "").Trim();
-
-						if(i == 0)
-						{
-							Headings.Add(nextWord);
-						}
-						else
-						{
-							RowData.Add(nextWord);
-						}
-
-						importData = importData.Substring(nextQuotedWord.Length);       //need to strip off the quoted word
+						nextQuotedWord = matches.First().Groups["Word"].Value;
 					}
+					else
+					{
+						nextQuotedWord = importData;
+					}
+
+					var nextWord = nextQuotedWord.Replace("\"", "").Trim();
+					wordCount += 1;
+
+					if(wordCount <= ColumnCount)
+					{
+						Headings.Add(nextWord.Replace(" ", ""));        //replace spaces in headers 
+					}
+					else
+					{
+						RowData.Add(nextWord);
+					}
+
+					importData = importData.Substring(nextQuotedWord.Length);       //need to strip off the quoted word
 				}
 			}
 			catch(Exception ex)

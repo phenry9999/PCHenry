@@ -22,6 +22,7 @@ namespace TableConversionUtility.ViewModels
 			EmployeesViewModel = new EmployeesViewModel(new EmployeeDataProvider());
 			ImportDataViewModel = new ImportDataViewModel();
 			UserActionsViewModel = new UserActionsViewModel();
+
 			UserActionsViewModel.AddCommand = EmployeesViewModel.AddCommand;
 			UserActionsViewModel.SortCommand = EmployeesViewModel.SortCommand;
 			UserActionsViewModel.SaveAsXmlCommand = EmployeesViewModel.SaveAsXmlCommand;

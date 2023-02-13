@@ -76,9 +76,28 @@ namespace TableConversionUtility.ViewModels
 		private void Add(object? parameter)
 		{
 			var importedEmployees = ConversionDataParser.Parse(DataToImport);
+			AddEmployees(Employees, importedEmployees);
+			StripDuplicateEmployees(Employees, importedEmployees);
+			RaisePropertyChanged(nameof(Employees));
+		}
 
-			Employees.Clear();
-			LoadEmployees(importedEmployees);
+		private void AddEmployees(ObservableCollection<EmployeeItemViewModel> employees, List<Employee> importedEmployees)
+		{
+			foreach(var importedEmployee in importedEmployees)
+			{
+				employees.Add(new EmployeeItemViewModel(importedEmployee));
+			}
+		}
+
+		private void StripDuplicateEmployees(ObservableCollection<EmployeeItemViewModel> employees, List<Employee> importedEmployees)
+		{
+			var strippedEmployees = employees.Distinct(new EmployeeDistinctComparer()).ToList();
+			employees.Clear();
+
+			foreach(var emp in strippedEmployees)
+			{
+				employees.Add(emp);
+			}
 		}
 
 		private void Sort(object? parameter)
