@@ -18,11 +18,11 @@
 			<RowDefinition/>
 		</Grid.RowDefinitions>
 
-		<controls:ImportDataControl Grid.Column="0" Grid.Row="0" />
+		<controls:ImportDataControl Grid.Column="0" Grid.Row="0" DataContext="{Binding ImportDataViewModel}"/>
 
-		<controls:UserActionsControl Grid.Column="0" Grid.Row="1"/>
+		<controls:UserActionsControl Grid.Column="0" Grid.Row="1" DataContext="{Binding UserActionsViewModel}"/>
 
-		<views:EmployeesView Grid.Column="0" Grid.Row="2"/>
+		<views:EmployeesView Grid.Column="0" Grid.Row="2" DataContext="{Binding EmployeesViewModel}"/>
 	</Grid>
 
 </Window>

@@ -22,19 +22,10 @@ namespace TableConversionUtility.Views
     /// </summary>
     public partial class EmployeesView : UserControl
     {
-        private EmployeesViewModel viewModel;
-
+        public int MyProperty { get; set; }
         public EmployeesView()
         {
             InitializeComponent();
-            viewModel = new EmployeesViewModel(new EmployeeDataProvider());
-            DataContext = viewModel;
-            Loaded += EmployeesView_Loaded;
-        }
-
-        private async void EmployeesView_Loaded(object sender, RoutedEventArgs e)
-        {
-            await viewModel.LoadAsync();
         }
     }
 }

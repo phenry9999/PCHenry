@@ -35,7 +35,8 @@
 				<Label Grid.Column="0" Grid.Row="1" Margin="5">Department</Label>
 				<TextBox Grid.Column="1" Grid.Row="1" Margin="5" d:Text="Development" Text="{Binding SelectedEmployee.Department, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 				<Label Grid.Column="0" Grid.Row="2" Margin="5">Age</Label>
-				<TextBox Grid.Column="1" Grid.Row="2" Margin="5"  d:Text="50" Text="{Binding SelectedEmployee.Age, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+				<TextBox Grid.Column="1" Grid.Row="2" Margin="5"  d:Text="50" Text="{Binding SelectedEmployee.Age, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,ValidatesOnExceptions=True}"/>
+				<!--Trying out the exception handling for the Age property-->
 			</Grid>
 		</Grid>
 	</Grid>

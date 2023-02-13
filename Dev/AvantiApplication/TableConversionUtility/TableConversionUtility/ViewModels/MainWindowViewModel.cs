@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using TableConversionUtility.Data.Providers;
 using TableConversionUtility.Views;
 
@@ -11,42 +13,18 @@ namespace TableConversionUtility.ViewModels
 {
 	public class MainWindowViewModel : ViewModelBase
 	{
-		private readonly IEmployeeDataProvider employeeDataProvider;
-		private EmployeeItemViewModel? selectedEmployee;
+		public ImportDataViewModel ImportDataViewModel { get; set; }
+		public UserActionsViewModel UserActionsViewModel { get; set; }
+		public EmployeesViewModel EmployeesViewModel { get; set; }
 
-		public ObservableCollection<EmployeeItemViewModel> Employees { get; } = new();
-
-		public EmployeeItemViewModel? SelectedEmployee
+		public MainWindowViewModel()
 		{
-			get => selectedEmployee;
-			set
-			{
-				selectedEmployee = value;
-				RaisePropertyChanged();
-			}
-		}
+			EmployeesViewModel = new EmployeesViewModel(new EmployeeDataProvider());
+			ImportDataViewModel = new ImportDataViewModel();
+			UserActionsViewModel = new UserActionsViewModel();
+			//UserActionsViewModel.AddCommand = EmployeesViewModel.AddCommand;
+			UserActionsViewModel.SortCommand = EmployeesViewModel.SortCommand;
 
-		public MainWindowViewModel(IEmployeeDataProvider employeeDataProvider)
-		{
-			this.employeeDataProvider = employeeDataProvider;
-		}
-
-		public async Task LoadAsync()
-		{
-			if(Employees.Any())
-			{
-				return;
-			}
-
-			var employees = await employeeDataProvider.GetAllAsync();
-
-			if(employees != null)
-			{
-				foreach(var emp in employees)
-				{
-					Employees.Add(new EmployeeItemViewModel(emp));
-				}
-			}
 		}
 	}
 }

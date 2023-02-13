@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TableConversionUtility.ViewModels;
 
 namespace TableConversionUtility
 {
@@ -20,9 +21,20 @@ namespace TableConversionUtility
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		private MainWindowViewModel viewModel;
+
 		public MainWindow()
 		{
 			InitializeComponent();
+			viewModel = new MainWindowViewModel();
+			DataContext = viewModel;
+			Loaded += this.OnLoad;
+		}
+
+		private void OnLoad(object sender, RoutedEventArgs e)
+		{
+			var t = viewModel.EmployeesViewModel.LoadAsync();
+			t.Wait();
 		}
 	}
 }

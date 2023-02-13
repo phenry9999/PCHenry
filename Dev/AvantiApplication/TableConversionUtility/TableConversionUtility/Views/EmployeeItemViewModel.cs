@@ -48,6 +48,9 @@ namespace TableConversionUtility.Views
 
 			set
 			{
+				if(string.IsNullOrEmpty(value))
+					throw new ArgumentNullException("Age needs to have a real number more than 1 and less than 100.");
+
 				model.Age = value;
 				RaisePropertyChanged();
 			}

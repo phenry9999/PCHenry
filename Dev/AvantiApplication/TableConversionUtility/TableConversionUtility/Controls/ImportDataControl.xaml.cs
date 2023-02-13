@@ -21,13 +21,9 @@ namespace TableConversionUtility.Controls
 	/// </summary>
 	public partial class ImportDataControl : UserControl
 	{
-		private ImportDataViewModel viewModel;
-
 		public ImportDataControl()
 		{
 			InitializeComponent();
-			viewModel = new ImportDataViewModel();
-			DataContext = viewModel;
 		}
 	}
 }

@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using TableConversionUtility.Commands;
 using TableConversionUtility.Data.Models;
 using TableConversionUtility.Data.Providers;
@@ -30,9 +32,12 @@ namespace TableConversionUtility.ViewModels
 			}
 		}
 
+		public ICommand SortCommand { get; }
+
 		public EmployeesViewModel(IEmployeeDataProvider employeeDataProvider)
 		{
 			this.employeeDataProvider = employeeDataProvider;
+			SortCommand = new DelegateCommand(Sort);
 		}
 
 		public async Task LoadAsync()
@@ -50,6 +55,17 @@ namespace TableConversionUtility.ViewModels
 				{
 					Employees.Add(new EmployeeItemViewModel(emp));
 				}
+			}
+		}
+
+		private void Sort(object? parameter)
+		{
+			var sortedEmployees = Employees.OrderBy(n => n.FirstName).ToList();
+			Employees.Clear();
+
+			foreach(var emp in sortedEmployees)
+			{
+				Employees.Add(emp);
 			}
 		}
 	}

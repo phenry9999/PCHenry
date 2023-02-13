@@ -21,13 +21,12 @@ namespace TableConversionUtility.Controls
 	/// </summary>
 	public partial class UserActionsControl : UserControl
 	{
-		private UserActionsViewModel viewModel;
-
 		public UserActionsControl()
 		{
 			InitializeComponent();
-			viewModel = new UserActionsViewModel();
-			DataContext = viewModel;
 		}
+
+
+
 	}
 }
