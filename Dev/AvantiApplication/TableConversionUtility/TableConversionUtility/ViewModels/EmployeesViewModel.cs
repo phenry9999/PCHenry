@@ -15,6 +15,7 @@ using System.Xml.Serialization;
 using TableConversionUtility.Commands;
 using TableConversionUtility.Data.Models;
 using TableConversionUtility.Data.Providers;
+using TableConversionUtility.Utilities;
 using TableConversionUtility.Views;
 
 namespace TableConversionUtility.ViewModels
@@ -85,29 +86,7 @@ namespace TableConversionUtility.ViewModels
 
 		private void SaveAsXml(object? parameter)
 		{
-			var fullPath = Assembly.GetExecutingAssembly().Location;
-			var folderPath = Path.GetDirectoryName(fullPath);
-			var xmlFilePath = Path.Combine(folderPath, "EmployeeConversion" + ".xml");
-
-			XmlWriterSettings settings = new XmlWriterSettings();
-			settings.ConformanceLevel = ConformanceLevel.Auto;
-			settings.Indent = true;
-
-			using(XmlWriter writer = XmlWriter.Create(xmlFilePath, settings))
-			{
-				writer.WriteStartElement("employees");
-				foreach(var emp in Employees)
-				{
-					writer.WriteStartElement("employee");
-					writer.WriteElementString("FirstName", emp.FirstName);
-					writer.WriteElementString("Department", emp.Department);
-					writer.WriteElementString("Age", emp.Age);
-					writer.WriteEndElement();
-				}
-
-				writer.WriteEndElement();
-				writer.Flush();
-			}
+			SerializationUtility.SerializeDataToXmlFile(Employees);
 		}
 	}
 }
