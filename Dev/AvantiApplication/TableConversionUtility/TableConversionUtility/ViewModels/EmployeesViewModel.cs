@@ -33,11 +33,15 @@ namespace TableConversionUtility.ViewModels
 		}
 
 		public ICommand SortCommand { get; }
+		public ICommand AddCommand { get; internal set; }
+		public ICommand SaveAsXmlCommand { get; internal set; }
 
 		public EmployeesViewModel(IEmployeeDataProvider employeeDataProvider)
 		{
 			this.employeeDataProvider = employeeDataProvider;
+			AddCommand = new DelegateCommand(Add);
 			SortCommand = new DelegateCommand(Sort);
+			SaveAsXmlCommand = new DelegateCommand(SaveAsXml);
 		}
 
 		public async Task LoadAsync()
@@ -58,6 +62,11 @@ namespace TableConversionUtility.ViewModels
 			}
 		}
 
+		private void Add(object? parameter)
+		{
+			MessageBox.Show("Add");
+		}
+
 		private void Sort(object? parameter)
 		{
 			var sortedEmployees = Employees.OrderBy(n => n.FirstName).ToList();
@@ -67,6 +76,11 @@ namespace TableConversionUtility.ViewModels
 			{
 				Employees.Add(emp);
 			}
+		}
+
+		private void SaveAsXml(object? parameter)
+		{
+			MessageBox.Show("SaveAsXml");
 		}
 	}
 }
