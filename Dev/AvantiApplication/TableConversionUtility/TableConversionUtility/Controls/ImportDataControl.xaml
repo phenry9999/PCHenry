@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:TableConversionUtility.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-	<TextBox TextWrapping="Wrap" VerticalAlignment="Top" Margin="5" 
+	<TextBox TextWrapping="Wrap" VerticalAlignment="Top" Margin="5,12,5,0" 
 			 ToolTip="Start with two integers which are the row and column count followed by all the column headers and then all the cell data" 
 			 Text="{Binding DataToImport, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 			 d:Text="R=1 C=3 &quot;First Name&quot; Department Age Mary &quot;Human Resources&quot; 25"/>

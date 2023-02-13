@@ -21,21 +21,6 @@ namespace TableConversionUtility.ViewModels
 
 		public UserActionsViewModel()
 		{
-			//AddCommand = new DelegateCommand(Add);
-			//SortCommand = new DelegateCommand(Sort);
-			//SaveAsXmlCommand = new DelegateCommand(SaveAsXml);
-		}
-
-		private void Add(object? parameter)
-		{
-			MessageBox.Show("Add");
-		}
-
-
-
-		private void SaveAsXml(object? parameter)
-		{
-			MessageBox.Show("SaveAsXml");
 		}
 	}
 }

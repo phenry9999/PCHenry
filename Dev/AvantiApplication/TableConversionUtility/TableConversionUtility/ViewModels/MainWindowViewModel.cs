@@ -25,6 +25,7 @@ namespace TableConversionUtility.ViewModels
 			UserActionsViewModel.AddCommand = EmployeesViewModel.AddCommand;
 			UserActionsViewModel.SortCommand = EmployeesViewModel.SortCommand;
 			UserActionsViewModel.SaveAsXmlCommand = EmployeesViewModel.SaveAsXmlCommand;
+			EmployeesViewModel.DataToImport = ImportDataViewModel.DataToImport;
 		}
 	}
 }

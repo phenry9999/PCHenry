@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Xml;
 using System.Xml.Serialization;
+using TableConversionUtility.Behaviors;
 using TableConversionUtility.Commands;
 using TableConversionUtility.Data.Models;
 using TableConversionUtility.Data.Providers;
@@ -42,6 +43,17 @@ namespace TableConversionUtility.ViewModels
 		public ICommand AddCommand { get; internal set; }
 		public ICommand SaveAsXmlCommand { get; internal set; }
 
+		private string dataToImport;
+		public string DataToImport
+		{
+			get => dataToImport;
+			set
+			{
+				dataToImport = value;
+				RaisePropertyChanged();
+			}
+		}
+
 		public EmployeesViewModel(IEmployeeDataProvider employeeDataProvider)
 		{
 			this.employeeDataProvider = employeeDataProvider;
@@ -58,9 +70,33 @@ namespace TableConversionUtility.ViewModels
 			}
 
 			var employees = await employeeDataProvider.GetAllAsync();
+			LoadEmployees(employees);
+		}
 
+		private void Add(object? parameter)
+		{
+			var importedEmployees = ConversionDataParser.Parse(DataToImport);
+
+			Employees.Clear();
+			LoadEmployees(importedEmployees);
+		}
+
+		private void Sort(object? parameter)
+		{
+			var sortedEmployees = Employees.OrderBy(n => n.FirstName).ToList();
+			LoadEmployees(sortedEmployees);
+		}
+
+		private void SaveAsXml(object? parameter)
+		{
+			SerializationUtility.SerializeDataToXmlFile(Employees);
+		}
+		private void LoadEmployees(IEnumerable<Employee>? employees)
+		{
 			if(employees != null)
 			{
+				Employees.Clear();
+
 				foreach(var emp in employees)
 				{
 					Employees.Add(new EmployeeItemViewModel(emp));
@@ -68,25 +104,17 @@ namespace TableConversionUtility.ViewModels
 			}
 		}
 
-		private void Add(object? parameter)
+		private void LoadEmployees(IEnumerable<EmployeeItemViewModel> employees)
 		{
-			MessageBox.Show("Add");
-		}
-
-		private void Sort(object? parameter)
-		{
-			var sortedEmployees = Employees.OrderBy(n => n.FirstName).ToList();
-			Employees.Clear();
-
-			foreach(var emp in sortedEmployees)
+			if(employees != null)
 			{
-				Employees.Add(emp);
-			}
-		}
+				Employees.Clear();
 
-		private void SaveAsXml(object? parameter)
-		{
-			SerializationUtility.SerializeDataToXmlFile(Employees);
+				foreach(var emp in employees)
+				{
+					Employees.Add(emp);
+				}
+			}
 		}
 	}
 }
