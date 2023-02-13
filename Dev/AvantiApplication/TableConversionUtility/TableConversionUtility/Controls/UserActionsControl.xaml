@@ -9,6 +9,6 @@
 	<StackPanel Orientation="Horizontal">
 		<Button Content="Add" Command="{Binding AddCommand}" Width="100" Margin="5"/>
 		<Button Content="Sort" Command="{Binding SortCommand}" Width="100" Margin="5"/>
-		<Button Content="Save as Xml" Command="{Binding SaveCommand}" Width="100" Margin="5"/>
+		<Button Content="Save as Xml" Command="{Binding SaveAsXmlCommand}" Width="100" Margin="5"/>
 	</StackPanel>
 </UserControl>

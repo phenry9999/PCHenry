@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TableConversionUtility" 
-		xmlns:controls="clr-namespace:TableConversionUtility.Controls" xmlns:views="clr-namespace:TableConversionUtility.Views"
+		xmlns:controls="clr-namespace:TableConversionUtility.Controls" 
+		xmlns:views="clr-namespace:TableConversionUtility.Views"
 		mc:Ignorable="d"
         Title="Table Conversion Utility" Height="450" Width="800">
 	<Grid>
@@ -17,7 +18,7 @@
 			<RowDefinition/>
 		</Grid.RowDefinitions>
 
-		<controls:DataImportControl Grid.Column="0" Grid.Row="0" />
+		<controls:ImportDataControl Grid.Column="0" Grid.Row="0" />
 
 		<controls:UserActionsControl Grid.Column="0" Grid.Row="1"/>
 

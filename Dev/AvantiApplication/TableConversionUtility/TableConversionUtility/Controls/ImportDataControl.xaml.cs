@@ -12,17 +12,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TableConversionUtility.ViewModels;
 
 namespace TableConversionUtility.Controls
 {
-    /// <summary>
-    /// Interaction logic for DataImportControl.xaml
-    /// </summary>
-    public partial class DataImportControl : UserControl
-    {
-        public DataImportControl()
-        {
-            InitializeComponent();
-        }
-    }
+	/// <summary>
+	/// Interaction logic for DataImportControl.xaml
+	/// </summary>
+	public partial class ImportDataControl : UserControl
+	{
+		private ImportDataViewModel viewModel;
+
+		public ImportDataControl()
+		{
+			InitializeComponent();
+			viewModel = new ImportDataViewModel();
+			DataContext = viewModel;
+		}
+	}
 }

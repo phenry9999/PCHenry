@@ -12,18 +12,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TableConversionUtility.ViewModels;
 
 namespace TableConversionUtility.Controls
 {
-    /// <summary>
-    /// Interaction logic for UserActionsControl.xaml
-    /// </summary>
-    public partial class UserActionsControl : UserControl
-    {
+	/// <summary>
+	/// Interaction logic for UserActionsControl.xaml
+	/// </summary>
+	public partial class UserActionsControl : UserControl
+	{
+		private UserActionsViewModel viewModel;
 
-        public UserActionsControl()
-        {
-            InitializeComponent();
-        }
-    }
+		public UserActionsControl()
+		{
+			InitializeComponent();
+			viewModel = new UserActionsViewModel();
+			DataContext = viewModel;
+		}
+	}
 }

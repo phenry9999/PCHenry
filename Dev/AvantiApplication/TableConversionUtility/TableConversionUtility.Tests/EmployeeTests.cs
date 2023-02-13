@@ -26,12 +26,12 @@ namespace TableConversionUtility.Tests
 		[TestMethod]
 		public void CreateSpecificEmployeeIsCorrectlyRead()
 		{
-			Employee employee = new Employee { FirstName = "Martin", LastName = "Brice", Department = "Development", Age = 27 };
+			Employee employee = new Employee { FirstName = "Martin", LastName = "Brice", Department = "Development", Age = "27" };
 
 			Assert.AreEqual(employee.FirstName, "Martin");
 			Assert.AreEqual(employee.LastName, "Brice");
 			Assert.AreEqual(employee.Department, "Development");
-			Assert.AreEqual(employee.Age, 27);
+			Assert.AreEqual(employee.Age, "27");
 		}
 
 		[TestMethod]
