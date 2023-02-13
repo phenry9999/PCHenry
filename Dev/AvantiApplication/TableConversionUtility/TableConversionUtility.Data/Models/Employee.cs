@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace TableConversionUtility.Data.Models
 {
+	[Serializable]
 	public class Employee
 	{
 		[Required(ErrorMessage = "This is the PK and is required.")]

@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Xml;
+using System.Xml.Serialization;
 using TableConversionUtility.Commands;
 using TableConversionUtility.Data.Models;
 using TableConversionUtility.Data.Providers;
@@ -80,7 +85,29 @@ namespace TableConversionUtility.ViewModels
 
 		private void SaveAsXml(object? parameter)
 		{
-			MessageBox.Show("SaveAsXml");
+			var fullPath = Assembly.GetExecutingAssembly().Location;
+			var folderPath = Path.GetDirectoryName(fullPath);
+			var xmlFilePath = Path.Combine(folderPath, "EmployeeConversion" + ".xml");
+
+			XmlWriterSettings settings = new XmlWriterSettings();
+			settings.ConformanceLevel = ConformanceLevel.Auto;
+			settings.Indent = true;
+
+			using(XmlWriter writer = XmlWriter.Create(xmlFilePath, settings))
+			{
+				writer.WriteStartElement("employees");
+				foreach(var emp in Employees)
+				{
+					writer.WriteStartElement("employee");
+					writer.WriteElementString("FirstName", emp.FirstName);
+					writer.WriteElementString("Department", emp.Department);
+					writer.WriteElementString("Age", emp.Age);
+					writer.WriteEndElement();
+				}
+
+				writer.WriteEndElement();
+				writer.Flush();
+			}
 		}
 	}
 }
