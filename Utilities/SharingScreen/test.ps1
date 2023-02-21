@@ -1,0 +1,1 @@
+pnputil /enum-devices /class Display

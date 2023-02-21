@@ -1,0 +1,74 @@
+# Look here for yours HKCU:Control Panel\Desktop\PerMonitorSettings\$MonitorID
+$MonitorID = "DELD10795RT6N3_1D_07E6_36^A06BE3E8D67DDA4539CC2D14689F6FD5"
+# To check these values, open up RegEd, goto path above, change zoom setting, open settings and check again
+# 0 is likely the Recommended value, and they go up or down (hex) from there
+#$dpiValueRegular = "4294967294"
+#$dpiValueRegular = "0"
+$dpiValueZoomed = "2"
+
+#to manually reset vid card, use Win + Ctrl + Shift + B
+function Restart-VideoDriver {
+	param([Parameter(Mandatory)][string]$GPUID
+	)
+
+	# Enables then disables GPU driver.
+	#Get-PnpDevice Man I just love dependency injection...
+So here's the absolute best part, in my opinion...
+You know how you must use interfaces for things that compile-wise, will come later? Ex. Service : IService1
+The problem then is what do you when "Service1" has more functionality than the interface, to be used only by those who know it exists?
+The simple but maybe error-prone is just to assume IService service is Service right? Either by casting (could fail) or check with "as" or "is"...
+That's ok if it'll work regardless (functionality is optional)
+The other option is just skip all the headaches and just have Service2 constructor be Service2(Service service), and have the DI container figure it out!
+You can do that by registering Service implementation to be found by either typeof(Service) and typeof(IService).
+That way, classes that don't know about Service can still use IService, and classes that need or want Service, can access it that way too!.
+2:27
+The only catch is if you allow plug-ins, you might not want to expose the non-interface versions to plug-ins...
+2:27
+But that can be done with a separate container that only has plug-in acceptable services registered...
+
+
+
+
+
+ $GPUID | Disable-PnpDevice -Confirm:$False
+	#Get-PnpDevice -FriendlyName $GPUID | Enable-PnpDevice -Confirm:$False
+
+	$MonitorDevice = Get-WmiObject -class Win32_PnPEntity -Namespace "root\CIMV2" | where { $_.PNPDeviceID -eq $MonitorID }
+	if ($MonitorDevice) { 
+		write-output('T') 
+ }
+ Else {
+		Write-Output('F')
+	}
+
+	Get-PnpDevice -InstanceId $MonitorDevice | Disable-PnpDevice -Confirm:$False
+	Get-PnpDevice -InstanceId $MonitorDevice | Enable-PnpDevice -Confirm:$False
+
+}
+
+function Set-DPIScaling {
+	param([Parameter(Mandatory)][string]$MonitorID,	[Parameter(Mandatory)][int]$ScalingLevel)
+
+	Set-ItemProperty -Path "HKCU:Control Panel\Desktop\PerMonitorSettings\$MonitorID" -Name "DpiValue" -Value $ScalingLevel
+}
+
+function Get-VideoCard {
+	$videoDevices = Get-PnpDevice -Class Display
+
+	if ($videoDevices.Count -gt 1) {
+		return $videoDevices[0].Name
+	}
+	else { 
+		return $videoDevices.Name 
+	}
+}
+
+function Main {
+	write-output "Changing video driver zoom level"
+	$GPUID = Get-VideoCard
+	Set-DPIScaling -MonitorID $MonitorID -ScalingLevel $dpiValueZoomed
+	Restart-VideoDriver -GPUID $GPUID
+	write-output "Changed video driver zoom level"
+}
+
+Main
