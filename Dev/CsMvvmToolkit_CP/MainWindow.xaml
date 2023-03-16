@@ -1,0 +1,295 @@
+﻿<Window x:Class="CsMvvmToolkit_CP.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CsMvvmToolkit_CP" xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+                Title="C# MVVM Toolkit Demo" Height="700" Width="1000" WindowStartupLocation="CenterScreen">
+    <!--<Window.DataContext>
+        <local:TestingViewModel/>
+    </Window.DataContext>-->
+
+    <b:Interaction.Triggers>
+
+        <b:EventTrigger EventName= "Loaded">
+            <b:InvokeCommandAction Command="{Binding ParamCommandMainWnd}" 
+                                                               CommandParameter="{Binding Mode=OneWay, 
+                RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"/>
+            <!--RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"/>-->
+        </b:EventTrigger>
+        <b:EventTrigger EventName= "Loaded">
+            <b:InvokeCommandAction Command="{Binding ParamCommandRibn}" 
+                                                               CommandParameter="{Binding ElementName=RibbonWPF, Mode=OneWay}"/>
+        </b:EventTrigger>
+
+        <b:EventTrigger EventName="Closing">
+            <b:InvokeCommandAction Command="{Binding ExitApp, Mode=OneWay}"/>
+        </b:EventTrigger>
+        <b:EventTrigger EventName="Loaded">
+            <b:InvokeCommandAction Command="{Binding Apploaded, Mode=OneWay}"/>
+        </b:EventTrigger>
+
+    </b:Interaction.Triggers>
+
+    <Grid x:Name="MyLayout" Margin="0" >
+        <DockPanel >
+            <Ribbon x:Name="RibbonWPF" RenderTransformOrigin="0,0" FontSize="14" Margin="0" DockPanel.Dock="Top">
+
+                <Ribbon.ApplicationMenu>
+                    <RibbonApplicationMenu CanAddToQuickAccessToolBarDirectly="True">
+                        <RibbonApplicationMenuItem x:Name="AppCmdNew" Header="New" 
+                                                   Command="{Binding NewFile, Mode=OneWay}" IsCheckable="False" 
+                                                   ImageSource="Images/newdocument32.png" 
+                                                   QuickAccessToolBarImageSource="Images/newdocument32.png" 
+                                                   CanAddToQuickAccessToolBarDirectly="False" />
+                        <RibbonApplicationMenuItem x:Name="AppCmdOpen" Header="Open" 
+                                                   Command="{Binding OpenFileDlgCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  IsCheckable="False" ImageSource="Images/open16.png" 
+                                                   QuickAccessToolBarImageSource="Images/open16.png" CanAddToQuickAccessToolBarDirectly="False" />
+                        <RibbonApplicationMenuItem x:Name="AppCmdSaveAs" Header="Save As" 
+                                                   Command="{Binding SaveAsFileDlgCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsCheckable="False" ImageSource="Images/save16.png" 
+                                                   QuickAccessToolBarImageSource="Images/save16.png" CanAddToQuickAccessToolBarDirectly="False" />
+                        <RibbonApplicationMenuItem x:Name="AppCmdPrint" Header="Print" 
+                                                   Command="{Binding Print, Mode=OneWay}" IsCheckable="False" ImageSource="Images/PrintHS.png" 
+                                                   QuickAccessToolBarImageSource="Images/PrintHS.png" CanAddToQuickAccessToolBarDirectly="False" />
+                        <RibbonApplicationMenuItem x:Name="AppCmdClose" Header="Close App" 
+                                                   Command="{Binding ExitApp, Mode=OneWay}" ImageSource="Images/close.png" 
+                                                   QuickAccessToolBarImageSource="Images/close.png" CanAddToQuickAccessToolBarDirectly="False" />
+                    </RibbonApplicationMenu>
+                </Ribbon.ApplicationMenu>
+                <Ribbon.InputBindings>
+                    <KeyBinding Command = "Save" Key="S" Modifiers="Ctrl" />
+                </Ribbon.InputBindings>
+
+                <Ribbon.QuickAccessToolBar>
+                    <RibbonQuickAccessToolBar HorizontalAlignment="Right" Width="120">
+                        <RibbonButton x:Name="AppCmdNewQAT" Command="{Binding NewFile, Mode=OneWay}" 
+                                      SmallImageSource="Images\newdocument32.png" KeyTip="N" />
+                        <RibbonButton x:Name="AppCmdOpenQAT" Command="{Binding OpenFileDlgCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  SmallImageSource="Images\open16.png" KeyTip="O"/>
+                        <RibbonButton x:Name="AppCmdSaveAsQAT" Command="{Binding SaveAsFileDlgCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" SmallImageSource="Images\save16.png" KeyTip="S"/>
+                        <RibbonButton x:Name="AppCmdCloseQAT" Command="{Binding ExitApp, Mode=OneWay}" 
+                                      SmallImageSource="Images\close.png"/>
+                    </RibbonQuickAccessToolBar>
+                </Ribbon.QuickAccessToolBar>
+
+                <RibbonTab x:Name="EditorTab" Header="Start" Height="97" Margin="0,0,-2,-9" 
+                           RenderTransformOrigin="0.5,0.682" KeyTip="">
+                    <RibbonGroup Header="File" Height="92" Margin="0" VerticalAlignment="Top" FontFamily="Arial" 
+                                 CanAddToQuickAccessToolBarDirectly="False" MinWidth="188">
+                        <RibbonButton x:Name="New" Content="RibbonButton" HorizontalAlignment="Left" Height="53" 
+                                      Margin="10,2,-86,-53" VerticalAlignment="Top" Width="80" Label="New" 
+                                      LargeImageSource="Images/newdocument32.png" ToolTipTitle="New" ToolTip="New" KeyTip="N" 
+                                      CanAddToQuickAccessToolBarDirectly="False" 
+                                      Command="{Binding NewFile, Mode=OneWay}"/>
+                        <RibbonButton x:Name="Open" Content="RibbonButton" HorizontalAlignment="Left" Height="22" 
+                                      Margin="95,0,-176,-26" VerticalAlignment="Top" Width="85" 
+                                      Label=" Open" SmallImageSource="Images/open16.png" ToolTipTitle="" ToolTip="Open" KeyTip="O" 
+                                      CanAddToQuickAccessToolBarDirectly="False" Command="{Binding OpenFileDlgCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <RibbonButton x:Name="SaveAs" Content="RibbonButton" HorizontalAlignment="Left" Height="Auto" 
+                                      Margin="94,24,-162,-70" VerticalAlignment="Top" Width="80" Label=" Save As"  KeyTip="S" 
+                                      AutomationProperties.AccessKey="S" AutomationProperties.AcceleratorKey="S" 
+                                      SmallImageSource="Images/save16.png" CanAddToQuickAccessToolBarDirectly="False" 
+                                      ToolTipTitle="Save As" Command="{Binding SaveAsFileDlgCommand}"/>
+                        <RibbonButton x:Name="Save" Content="RibbonButton" HorizontalAlignment="Left" Height="Auto" 
+                                      Margin="94,46,-162,-70" VerticalAlignment="Top" Width="80" Label=" Save"  KeyTip="S" 
+                                      AutomationProperties.AccessKey="S" AutomationProperties.AcceleratorKey="S" 
+                                      SmallImageSource="Images/save16.png" Visibility="Hidden" 
+                                      CanAddToQuickAccessToolBarDirectly="False"/>
+                    </RibbonGroup>
+                    <RibbonGroup Header="Clipboard" Margin="0" FontFamily="Arial" VerticalAlignment="Top" Height="92" 
+                                 CanAddToQuickAccessToolBarDirectly="False" MinWidth="88">
+                        <RibbonButton x:Name="ClipboardCmdCut" Label=" Cut" SmallImageSource="Images/cut16.png" Margin="0,2,0,0" 
+                                      CanAddToQuickAccessToolBarDirectly="False" Command="ApplicationCommands.Cut"/>
+                        <RibbonButton x:Name="ClipboardCmdCopy" Label=" Copy" SmallImageSource="Images/copy16.png" KeyTip="C" 
+                                      Margin="0,2,-1.708,0" Height="Auto" 
+                                      CanAddToQuickAccessToolBarDirectly="False" Command="ApplicationCommands.Copy"/>
+                        <RibbonButton x:Name="ClipboardCmdPaste" Label=" Paste" SmallImageSource="Images/paste16.png" Margin="0,2,0,0" CanAddToQuickAccessToolBarDirectly="False" Command="ApplicationCommands.Paste"/>
+                    </RibbonGroup>
+                    <RibbonGroup x:Name="Paragraph" FontFamily="Arial" Header="Paragraph" Height="92" Margin="0,0,-2,0" 
+                                 VerticalAlignment="Top" CanAddToQuickAccessToolBarDirectly="False" MinWidth="199" Width="199" 
+                                 HorizontalAlignment="Left">
+                        <StackPanel x:Name="StackpanelRT1" Margin="3,2,0,-22" VerticalAlignment="Top" Orientation="Horizontal" Height="22">
+                            <RibbonButton x:Name="LeftAlignRibbonButton" Content="RibbonButton" Height="22" Margin="0" SmallImageSource="Images/LeftAlign.png" VerticalAlignment="Top" ToolTipTitle="LeftAlign" Command="EditingCommands.AlignLeft"/>
+                            <RibbonButton x:Name="CenterRibbonButton" Content="RibbonButton" Height="22" Margin="0" SmallImageSource="Images/center.png" ToolTipTitle="Center" Command="EditingCommands.AlignCenter"/>
+                            <RibbonButton x:Name="RightAlignRibbonButton" Content="RibbonButton" Height="22" Margin="0" SmallImageSource="Images/RightAlign.png" ToolTipTitle="RightAlign" Command="EditingCommands.AlignRight"/>
+                            <RibbonButton x:Name="BoldRibbonButton" Content="RibbonButton" Height="22" Margin="0" SmallImageSource="Images/bold.png" VerticalAlignment="Top" ToolTipTitle="Bold" Command="EditingCommands.ToggleBold"/>
+                            <RibbonButton x:Name="ItalicRibbonButton" Content="RibbonButton" Height="22" Margin="0" SmallImageSource="Images/italic.png" VerticalAlignment="Top" ToolTipTitle="Italic" Command="EditingCommands.ToggleItalic"/>
+                            <RibbonButton x:Name="UnderlineRibbonButton" Content="RibbonButton" Height="22" Margin="0" SmallImageSource="Images/underline16.png" VerticalAlignment="Top" ToolTipTitle="Underline" Command="EditingCommands.ToggleUnderline"/>
+                            <RibbonButton x:Name="BulletsRibbonButton" Content="RibbonButton" Height="22" Margin="0"  VerticalAlignment="Top" ToolTipTitle="Bullets" FontWeight="Bold" Label="" SmallImageSource="Images/bullets.png" Command="EditingCommands.ToggleBullets"/>
+                            <RibbonButton  Command="EditingCommands.ToggleNumbering" ToolTip="Numbering" SmallImageSource="Images/Numbered.png"/>
+                        </StackPanel>
+                        <StackPanel x:Name="StackpanelRT2" Margin="3,24,-120,-22" VerticalAlignment="Top" 
+                                    Orientation="Horizontal" Height="22">
+                            <RibbonButton x:Name="UndoRibbonButton" Content="RibbonButton" Height="22" Margin="0" 
+                                          SmallImageSource="Images/undo16.png" ToolTipTitle="Undo" 
+                                          Command="ApplicationCommands.Undo" HorizontalAlignment="Left"/>
+                            <RibbonButton x:Name="RedoRibbonButton" Content="RibbonButton" Height="22" Margin="0" 
+                                          SmallImageSource="Images/Redo.png" ToolTipTitle="Redo" 
+                                          Command="ApplicationCommands.Redo" HorizontalAlignment="Right"/>
+                        </StackPanel>
+                    </RibbonGroup>
+                    <RibbonGroup Header="Edit" Margin="0" Height="92" FontSize="14" VerticalAlignment="Top" FontFamily="Arial" 
+                                 CanAddToQuickAccessToolBarDirectly="False" MinWidth="99">
+                        <StackPanel x:Name="StackpanelFontGroup" HorizontalAlignment="Right" Margin="-9,0,11,-82" VerticalAlignment="Bottom" Width="140" Height="79">
+                            <!--<RibbonComboBox x:Name="ribbonComboBoxColor" Width="133" Height="28" Margin="11,0,0,0" SmallImageSource="Images/fontcolor16.png" VerticalAlignment="Top">
+                                <RibbonMenuItem x:Name="ColorBlackMenuItem" Header="Black" Foreground="Black" Command="{Binding ColorBlack}" />
+                                <RibbonMenuItem x:Name="ColorBlueMenuItem" Header="Blue" Foreground="Blue" Command="{Binding ColorBlue}" />
+                                <RibbonMenuItem x:Name="ColorGreenMenuItem" Header="Green" Foreground="Green" Command="{Binding ColorGreen}" />
+                                <RibbonMenuItem x:Name="ColorRedMenuItem" Header="Red" Foreground="Red" Command="{Binding ColorRed}" />
+                                <RibbonMenuItem x:Name="ColorYellowMenuItem" Header="Yellow" Foreground="Yellow" Command="{Binding ColorYellow}" />
+                            </RibbonComboBox>-->
+                            <RibbonButton x:Name="FontsDlgRibbonButton"  Margin="9,-4,3,33" Width="122" SmallImageSource="Images/goto16.png" Label="Fonts Dialog" Command="{Binding FontDlgCommand}"/>
+                            <RibbonButton x:Name="SearchRibbonButton" Content="RibbonButton" HorizontalAlignment="Left" 
+                                      Margin="11,-33,0,0" VerticalAlignment="Top" Width="90" Height="28" Label="Search" 
+                                      ToolTipTitle="Search" SmallImageSource="Images/search.png" CanAddToQuickAccessToolBarDirectly="False" ToolTipDescription="ToolTip Test " ToolTipImageSource="Images/search.png" Command="{Binding SearchDlgCommand}"/>
+                        </StackPanel>
+                    </RibbonGroup>
+
+                    <RibbonGroup Header="Test Group" Margin="0" Height="92" FontSize="14" VerticalAlignment="Top" FontFamily="Arial" 
+                         CanAddToQuickAccessToolBarDirectly="False" MinWidth="133" Width="225">
+                        <RibbonTextBox x:Name="ribbonTextBox" Text="{Binding OnPropertyChangedTest, UpdateSourceTrigger=PropertyChanged}" 
+                               HorizontalAlignment="Right" Margin="0,0,-90,-30" TextWrapping="Wrap" VerticalAlignment="Bottom" 
+                               Width="120" UndoLimit="10" FontSize="12"/>
+                        <RibbonTextBox x:Name="NotifyTextBox" Text="{Binding OnPropertyChangedTest, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Margin="0,0,-90,-53" 
+                               TextWrapping="Wrap" VerticalAlignment="Bottom" Width="120" UndoLimit="10" FontSize="12"/>
+                        <RibbonTextBox x:Name="MsgTextBox" Text="{Binding DialogMessage}" HorizontalAlignment="Right" Margin="0,0,-90,-76" 
+                               TextWrapping="Wrap" VerticalAlignment="Bottom" Width="120" UndoLimit="10" FontSize="12" 
+                               Foreground="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}"/>
+                        <RibbonButton x:Name="SendMsgRibbonButton" Width="99" Height="21" Margin="102,0,0,-130" Label="Send Msg" 
+                              MinWidth="99" Visibility="Hidden"  />
+
+                        <Grid>
+                            <StackPanel Margin="100,9,0,0" Height="21" Width="99">
+                                <RibbonButton Content="Open Dialog"  Command="{Binding OpenUserInputCommand}" Margin="0" Width="99" Height="21" Label="Add Credit"/>
+                            </StackPanel>
+                        </Grid>
+
+                    </RibbonGroup>
+                </RibbonTab>
+
+                <RibbonTab x:Name="RibbonSettings" Header="Ribbon Settings" FontFamily="Arial" Height="98" Margin="0,0,-2,-9">
+                    <RibbonGroup Header="Settings | Options" Height="92" Margin="0" VerticalAlignment="Top" Width="200" FontFamily="Arial" CanAddToQuickAccessToolBarDirectly="False">
+                        <RibbonButton x:Name="RestoreQATRibbonButton" Content="RibbonButton" HorizontalAlignment="Left" Margin="10,5,-76,0" Label="Restore QAT" Height="22" CanAddToQuickAccessToolBarDirectly="False" SmallImageSource="Images/undo16.png" ToolTipTitle="Restore Quick Access Toolbar" Command="{Binding RestoreQAT}"/>
+                        <RibbonButton x:Name="BackgroundWhiteRibbonButton" Content="RibbonButton" HorizontalAlignment="Left" Height="22" Margin="10,0,-138,-14" VerticalAlignment="Bottom" Width="144" Label="Background White" CanAddToQuickAccessToolBarDirectly="False" d:LayoutOverrides="VerticalAlignment" SmallImageSource="Images/config.png" Command="{Binding WhiteBackground}"/>
+                        <RibbonButton x:Name="BackgroundGreenRibbonButton" Content="RibbonButton" HorizontalAlignment="Left" Height="22" Margin="10,0,-138,-36" VerticalAlignment="Bottom" Width="144" Label="Background Green" CanAddToQuickAccessToolBarDirectly="False" d:LayoutOverrides="VerticalAlignment" SmallImageSource="Images/config.png" Command="{Binding GreenBackground}"/>
+                    </RibbonGroup>
+                </RibbonTab>
+                <RibbonTab x:Name="TabHelp" Header="Help" RenderTransformOrigin="0.523,0.551" Margin="0,0,-11,-22" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
+                    <RibbonButton x:Name="Info" Label="Info" SmallImageSource="Images/help_icon.png" Margin="0,-44,0,22" HorizontalAlignment="Center" VerticalAlignment="Center" Height="Auto" CanAddToQuickAccessToolBarDirectly="False" Command="{Binding Info, Mode=OneWay}"/>
+                </RibbonTab>
+
+            </Ribbon>
+            <StatusBar  DockPanel.Dock="Bottom"
+                    IsTabStop="False" Background="{DynamicResource {x:Static SystemColors.InfoBrushKey}}">
+                <StatusBarItem HorizontalAlignment="Right">
+                    <TextBlock x:Name="StatBarText"
+                            Text="{Binding DialogMessage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                            TextAlignment="Left" 
+                            Margin="0 0 30 0" Width="985"/>
+                </StatusBarItem>
+            </StatusBar>
+
+            <TabControl x:Name="tabControl" TabStripPlacement="Bottom" Margin="0,5">
+                <TabItem x:Name="tabTesting" Header="MVVM Toolkit Testing">
+
+                    <Grid Background="#FFE5E5E5" Margin="0,2,0,-105">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="349*"/>
+                            <ColumnDefinition Width="637*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Margin="0,24,160,93" Grid.Column="1" 
+                                    HorizontalAlignment="Right" Width="85">
+                            <Button x:Name="myTestMsgButton" Content="Send Msg" 
+                                    Margin="0,0,-108,0" Height="22" 
+                                    Command="{Binding SendMsg, Mode=OneWay}" 
+                                    RenderTransformOrigin="0.533,-8.223" 
+                                    d:LayoutOverrides="HorizontalAlignment"/>
+                            <Button x:Name="myGetErrrorButton" Content="Get Error" 
+                                    Command="{Binding GetError, Mode=OneWay}" 
+                                    Height="22" Margin="0,2,-108,0"/>
+                            <Button x:Name="myClearListboxButton" Content="Clear Listbox" 
+                                    Command="{Binding ClearListbox, Mode=OneWay}" 
+                                    Height="22" Margin="0,2,-108,0"/>
+                            <Button x:Name="myReadXmlListboxButton" Content="Read Xml to Listbox" 
+                                    Height="22" Margin="0,2,-108,0" Command="{Binding ReadXml, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Button x:Name="myReadLogButton" 
+                                    Height="22" Margin="0,2,-108,0" Command="{Binding ReadLog, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Content="Read Log"/>
+                            <Button x:Name="myClearTextBoxButton" Content="Clear TextBox" 
+                                    Height="22" Margin="0,2,-108,0" Command="{Binding NewFile, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <!--<Button x:Name="myOpenFileButton" Content="Open File Dialog" 
+                                    Height="22" Margin="0,2,-108,0" Command="{Binding OpenFileDlgCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>-->
+                        </StackPanel>
+
+                        <TextBox x:Name="myTextBox" Height="145" Margin="0,24,264,0" 
+                                 TextWrapping="Wrap" 
+                                 VerticalAlignment="Top" Grid.ColumnSpan="2" AcceptsReturn="True" 
+                                 Text="{Binding GetText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName= "MouseWheel">
+                                    <b:InvokeCommandAction Command="{Binding ParamCommandTBx}" 
+                                                               CommandParameter="{Binding ElementName=myTextBox, Mode=OneWay}"/>
+                                </b:EventTrigger>
+                                <b:EventTrigger EventName= "MouseDoubleClick">
+                                    <b:InvokeCommandAction Command="{Binding ParamCommandTBx}" 
+                                                               CommandParameter="{Binding ElementName=myTextBox, Mode=OneWay}"/>
+                                </b:EventTrigger>
+                                <b:EventTrigger EventName= "TextChanged">
+                                    <b:InvokeCommandAction Command="{Binding ParamCommandTBx}" 
+                                                               CommandParameter="{Binding ElementName=myTextBox, Mode=OneWay}"/>
+                                </b:EventTrigger>
+                                <b:EventTrigger EventName= "MouseEnter">
+                                    <b:InvokeCommandAction Command="{Binding ParamCommandTBx}" 
+                                                               CommandParameter="{Binding ElementName=myTextBox, Mode=OneWay}"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                        </TextBox>
+
+                        <ListView x:Name="lstCredits" Margin="0,204,5,114" 
+                                  Grid.Row="0" Grid.ColumnSpan="2" 
+                                  ItemsSource="{Binding GetCredits, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  >
+                            <ListView.View>
+                                <GridView x:Name="grdNames" AllowsColumnReorder="False">
+                                    <GridViewColumn Header="Item" 
+                                                    DisplayMemberBinding="{Binding Item}" />
+                                    <GridViewColumn Header="Note" 
+                                                    DisplayMemberBinding="{Binding Note}" />
+                                    <GridViewColumn Header="Link" 
+                                                    DisplayMemberBinding="{Binding Link}" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <Label x:Name="label" Content="Credits:" 
+                               Margin="2,174,0,0" VerticalAlignment="Top" 
+                               Height="25" FontWeight="Bold" 
+                               HorizontalAlignment="Left" Width="140"/>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="tabNothing" Header="Rich Text">
+                    <Grid Background="#FFE5E5E5">
+                        <RichTextBox x:Name="myRichTextBox" d:LayoutOverrides="HorizontalAlignment" IsDocumentEnabled="True" FontSize="14">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName= "MouseWheel">
+                                    <b:InvokeCommandAction Command="{Binding ParameterisedCommand}" 
+                                                           CommandParameter="{Binding ElementName=myRichTextBox, Mode=OneWay}"/>
+                                </b:EventTrigger>
+                                <b:EventTrigger EventName= "MouseDoubleClick">
+                                    <b:InvokeCommandAction Command="{Binding ParameterisedCommand}" 
+                                                           CommandParameter="{Binding ElementName=myRichTextBox, Mode=OneWay}"/>
+                                </b:EventTrigger>
+                                <b:EventTrigger EventName= "TextChanged">
+                                    <b:InvokeCommandAction Command="{Binding ParameterisedCommand}" 
+                                                           CommandParameter="{Binding ElementName=myRichTextBox, Mode=OneWay}"/>
+                                </b:EventTrigger>
+                                <b:EventTrigger EventName= "MouseEnter">
+                                    <b:InvokeCommandAction Command="{Binding ParameterisedCommand}" 
+                                                           CommandParameter="{Binding ElementName=myRichTextBox, Mode=OneWay}"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                        </RichTextBox>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </DockPanel>
+    </Grid>
+</Window>

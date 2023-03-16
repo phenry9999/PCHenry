@@ -1,0 +1,13 @@
+﻿<Window x:Class="AppSettingslearning.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AppSettingslearning"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+		<Label x:Name="EnvironmentLabel" Content="Environment:" HorizontalAlignment="Left" Margin="27,29,0,0" VerticalAlignment="Top"/>
+		<Label x:Name="EnvironmentValue" Content="DESIGN" HorizontalAlignment="Left" Margin="111,30,0,0" VerticalAlignment="Top"/>
+	</Grid>
+</Window>
