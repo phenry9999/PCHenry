@@ -1,0 +1,14 @@
+<?wpl version="1.0"?>
+<smil>
+    <head>
+        <meta name="Generator" content="Microsoft Windows Media Player -- 12.0.22621.1"/>
+        <meta name="ItemCount" content="0"/>
+        <author/>
+        <title>DI.FM.ClassicEurodance</title>
+    </head>
+    <body>
+        <seq>
+            <media src="http://prem1.di.fm:80/classiceurodance?7b8ee2b848c2e470c2a903d1"/>
+        </seq>
+    </body>
+</smil>
