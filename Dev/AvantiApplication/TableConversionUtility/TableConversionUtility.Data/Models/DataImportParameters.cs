@@ -21,32 +21,32 @@ namespace TableConversionUtility.Data.Models
 		/// testing data
 		/// 
 		/*
-FirstName Department Age Mary HumanResources 25 George Development 36
-FirstName    Department    Age    Mary    HumanResources    25    George    Development    36
-FirstName Department Age Mary "Human Resources" 25 George Development 36
-FirstName Department Age Mary HumanResources 25 George Development 36
-FirstName Department Age Mary 'Human Resources' 25 George Development 36
-FirstName Department Age Mary 'Human Resources' 25 George Development 36 
-FirstName Department Age Mary 'Human Resources' 25 George Development 36    
-1234 Department Age Mary HumanResources 25 George Development 36
+		FirstName Department Age Mary HumanResources 25 George Development 36
+		FirstName    Department    Age    Mary    HumanResources    25    George    Development    36
+		FirstName Department Age Mary "Human Resources" 25 George Development 36
+		FirstName Department Age Mary HumanResources 25 George Development 36
+		FirstName Department Age Mary 'Human Resources' 25 George Development 36
+		FirstName Department Age Mary 'Human Resources' 25 George Development 36 
+		FirstName Department Age Mary 'Human Resources' 25 George Development 36    
+		1234 Department Age Mary HumanResources 25 George Development 36
 
-"FirstName" Department Age Mary "HumanResources" 25 George Development 36
-"First Name" Department Age Mary "Human Resources" 25 George Development 36
-"First    Name" Department Age Mary "Human    Resources" 25 George Development 36
-"First Name" Department Age Mary HumanResources 25 George Development 36
-"First Name"    Department    Age    Mary    HumanResources    25    George    Development    36
-"First Name"    Department    Age    Mary    HumanResources    25    George    Development    36 
-"First Name"    Department    Age    Mary    HumanResources    25    George    Development    36    
-"1234" Department Age Mary HumanResources 25 George Development 36
-"1234"... Department ...Age... Mary ...HumanResources... 25 ...George ...Development ...36
+		"FirstName" Department Age Mary "HumanResources" 25 George Development 36
+		"First Name" Department Age Mary "Human Resources" 25 George Development 36
+		"First    Name" Department Age Mary "Human    Resources" 25 George Development 36
+		"First Name" Department Age Mary HumanResources 25 George Development 36
+		"First Name"    Department    Age    Mary    HumanResources    25    George    Development    36
+		"First Name"    Department    Age    Mary    HumanResources    25    George    Development    36 
+		"First Name"    Department    Age    Mary    HumanResources    25    George    Development    36    
+		"1234" Department Age Mary HumanResources 25 George Development 36
+		"1234"... Department ...Age... Mary ...HumanResources... 25 ...George ...Development ...36
 
-'First Name' Department Age Mary 'Human Resources' 25 George Development 36
-'First    Name' Department Age Mary... HumanResources 25 George Development 36
-'First Name' Department Age Mary HumanResources 25 George Development 36
-'First Name' Department Age Mary HumanResources 25 George Development 36 
-'First Name' Department Age Mary HumanResources 25 George Development 36    
-'First Name'    Department    Age    Mary    HumanResources    25    George    Development    36
-'1234' Department Age Mary HumanResources 25 George Development 36
+		'First Name' Department Age Mary 'Human Resources' 25 George Development 36
+		'First    Name' Department Age Mary... HumanResources 25 George Development 36
+		'First Name' Department Age Mary HumanResources 25 George Development 36
+		'First Name' Department Age Mary HumanResources 25 George Development 36 
+		'First Name' Department Age Mary HumanResources 25 George Development 36    
+		'First Name'    Department    Age    Mary    HumanResources    25    George    Development    36
+		'1234' Department Age Mary HumanResources 25 George Development 36
 
 		*/
 		/// </summary>
