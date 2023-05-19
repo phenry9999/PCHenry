@@ -1,0 +1,42 @@
+﻿<Window x:Class="TestingBench.Desktop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:TestingBench.Desktop"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
+        xmlns:local="clr-namespace:TestingBench.Desktop"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel}"
+        Title="MainWindow" Height="600" Width="800">
+    <Window.Resources>
+    </Window.Resources>
+    <Grid>
+
+        <StackPanel Orientation="Vertical" Margin="5">
+            <ListBox Margin="5">Pick Something from the list below
+                <ListBoxItem>Habitants</ListBoxItem>
+                <ListBoxItem>Sens</ListBoxItem>
+                <ListBoxItem>Leafs</ListBoxItem>
+                <ListBoxItem>Sabres</ListBoxItem>
+            </ListBox>
+            <TextBlock Margin="5">Testing</TextBlock>
+            <TextBox Margin="5">Testing</TextBox>
+            <telerik:RadToggleSwitchButton Grid.Row="3" Grid.Column="1" IsChecked="true" Margin="5" UncheckedContent="No" CheckedContent="Yes" Content="WhatIsThisContentYouSpeakOf">
+            </telerik:RadToggleSwitchButton>
+            <Button Command="{Binding ChangeThemeCommand}" CommandParameter="Vista" Margin="5">Vista</Button>
+            <Button Command="{Binding ChangeThemeCommand}" CommandParameter="Windows7" Margin="5">Windows7</Button>
+            <Button Command="{Binding ChangeThemeCommand}" CommandParameter="Windows8" Margin="5">Windows8</Button>
+            <Button Command="{Binding ChangeThemeCommand}" CommandParameter="Windows11" Margin="5">Windows11</Button>
+            <Button Command="{Binding ChangeThemeCommand}" CommandParameter="ExpressionDark" Margin="5">ExpressionDark</Button>
+            <Button Command="{Binding ChangeThemeCommand}" CommandParameter="Crystal" Margin="5">Crystal</Button>
+            <Button Command="{Binding ChangeThemeCommand}" CommandParameter="Summer" Margin="5">Summer</Button>
+            <Button Command="{Binding ChangeThemeCommand}" CommandParameter="Transparent" Margin="5">Transparent</Button>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Theme" Margin="5"></Label>
+                <TextBlock d:Text="System" Text="{Binding ThemeName}" Margin="5" Background="YellowGreen" VerticalAlignment="Center" Height="40" Width="150" HorizontalAlignment="Center" TextAlignment="Center" Padding="10"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
+
