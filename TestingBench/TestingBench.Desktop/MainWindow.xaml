@@ -20,6 +20,12 @@
                 <ListBoxItem>Leafs</ListBoxItem>
                 <ListBoxItem>Sabres</ListBoxItem>
             </ListBox>
+            <ComboBox Width="120" HorizontalAlignment="Left"/>
+            <Calendar />
+            <StackPanel Orientation="Horizontal">
+            <RadioButton Margin="5">FirstOption</RadioButton>
+            <RadioButton Margin="5">SecondOption</RadioButton>
+                </StackPanel>
             <TextBlock Margin="5">Testing</TextBlock>
             <TextBox Margin="5">Testing</TextBox>
             <telerik:RadToggleSwitchButton Grid.Row="3" Grid.Column="1" IsChecked="true" Margin="5" UncheckedContent="No" CheckedContent="Yes" Content="WhatIsThisContentYouSpeakOf">
@@ -32,6 +38,10 @@
             <Button Command="{Binding ChangeThemeCommand}" CommandParameter="Crystal" Margin="5">Crystal</Button>
             <Button Command="{Binding ChangeThemeCommand}" CommandParameter="Summer" Margin="5">Summer</Button>
             <Button Command="{Binding ChangeThemeCommand}" CommandParameter="Transparent" Margin="5">Transparent</Button>
+            <Button Command="{Binding ChangeThemeCommand}" CommandParameter="Fluent" Margin="5">Fluent</Button>
+            <Button Command="{Binding ChangeThemeCommand}" CommandParameter="Green" Margin="5">Green</Button>
+            
+            <Button Command="{Binding ChangeThemeCommand}" CommandParameter="Office2019" Margin="5">Office2019</Button>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Theme" Margin="5"></Label>
                 <TextBlock d:Text="System" Text="{Binding ThemeName}" Margin="5" Background="YellowGreen" VerticalAlignment="Center" Height="40" Width="150" HorizontalAlignment="Center" TextAlignment="Center" Padding="10"/>
