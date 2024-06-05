@@ -1,0 +1,43 @@
+Using a converter
+		<conv:DateTimeFormatConverter x:Key="DateTimeConverter" />
+		<conv:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+		<conv:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
+
+
+<TextBlock Text="{Binding ExecutionDate, Converter={StaticResource DateTimeConverter}}" />
+
+
+Setting access key and linked control
+			<Label
+				Grid.Row="1"
+				Grid.Column="0"
+				HorizontalAlignment="Right"
+				Content="Avanti _INI File"
+				Target="{Binding ElementName=AvantiIniFileTextBox}" />
+			<TextBox
+				x:Name="AvantiIniFileTextBox"
+				Grid.Row="1"
+				Grid.Column="1"
+				MinWidth="200"
+				HorizontalAlignment="Stretch"
+				VerticalAlignment="Center"
+				d:Text="c:\temp\Avanti\AvWinSys\Avanti.ini"
+				Text="{Binding AvantiIniFilenamePath, UpdateSourceTrigger=PropertyChanged, Delay=700}" />
+
+
+Linking one controls property value to another
+				<Button
+					x:Name="InstallButton"
+					Width="250"
+					Height="50"
+					Margin="10"
+					Click="Button_Click"
+					Command="{Binding InstallCommand}">
+                ...
+				</Button>
+				<Button
+					Width="{Binding ElementName=InstallButton, Path=Width}"
+					Height="{Binding ElementName=InstallButton, Path=Height}"
+					Margin="{Binding ElementName=InstallButton, Path=Margin}"
+					Command="{Binding ExitCommand}">
+
