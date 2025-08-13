@@ -39,6 +39,11 @@ Linking one controls property value to another
 					Height="{Binding ElementName=InstallButton, Path=Height}"
 					Margin="{Binding ElementName=InstallButton, Path=Margin}"
 					Command="{Binding ExitCommand}">
+
+<telerik:RadToolBar>
+	<telerik:RadMultiColumnComboBox
+	 	Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"					
+		>
 ------------------------------------------------------
 Setting up resources on a page\Window and setting Styles by target type
 	<Window.Resources>
