@@ -1,0 +1,2 @@
+self referencing property of yourself
+DropDownMinWidth="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
