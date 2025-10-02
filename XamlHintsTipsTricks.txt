@@ -1,2 +1,15 @@
-self referencing property of yourself
+#self referencing property of yourself
 DropDownMinWidth="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
+
+#Setting ColSpan = total columns in parent Grid
+Grid.ColumnSpan="{Binding ColumnDefinitions.Count, RelativeSource={RelativeSource AncestorType=Grid}}"
+
+#using a converter
+IsReadOnlyBinding="{Binding StateCode, Converter={StaticResource NotNullToBooleanConverter}}"
+
+#setting ItemsSource away from current DataContext scope
+ItemsSource="{Binding DataContext.AllStateCodes, RelativeSource={RelativeSource AncestorType=telerik:RadWindow}}"
+ItemsSource="{Binding DataContext.AllCompanies, RelativeSource={RelativeSource AncestorType=telerik:RadWindow}}"
+
+#Background to system color
+Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
