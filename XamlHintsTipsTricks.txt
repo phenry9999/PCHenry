@@ -13,3 +13,12 @@ ItemsSource="{Binding DataContext.AllCompanies, RelativeSource={RelativeSource A
 
 #Background to system color
 Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
+
+
+#Set one width based on another x:Name
+<Button x:Name="SelectStateTaxExemptionsButton"
+        d:Content="Select All for ON"
+        Content="{Binding SelectAllTaxExemptionsButtonTitle}"/>
+<Button x:Name="SelectAllTaxExemptionsButton"
+        Content="Select All"
+        Width="{Binding ElementName=SelectAllTaxExemptionsButton, Path=ActualWidth}"/>
