@@ -53,13 +53,58 @@
 
 	//making textblock with multiple text bindings
 	<TextBlock VerticalAlignment="Center">
-	<Run Text="{Binding Name}"/>
-	<Run Text=" ("/>
-	<Run Text="{Binding Nickname}"/>
-	<Run Text=")"/>
-	<Run Text=" - "/>
-	<Run Text="{Binding ArenaName}"/>
-	<Run Text=" ("/>
-	<Run Text="{Binding CityName}"/>
-	<Run Text=")"/>
+<Run Text="{Binding Name}"/>
+<Run Text=" ("/>
+<Run Text="{Binding Nickname}"/>
+<Run Text=")"/>
+<Run Text=" - "/>
+<Run Text="{Binding ArenaName}"/>
+<Run Text=" ("/>
+<Run Text="{Binding CityName}"/>
+<Run Text=")"/>
 	</TextBlock>
+
+
+	//self referencing a propperty on yourself
+DropDownMaxWidth="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
+	
+
+//relative data context binding
+ItemsSource="{Binding DataContext.AllCompanyTypes, RelativeSource={RelativeSource AncestorType=telerik:RadWindow}}"
+//another way
+ItemsSource="{Binding Source={x:Reference MainWindowPage}, Path=DataContext.AllCompanyTypes}"
+
+
+
+//Change control values based on VM property values, DataTemplate.Triggers and the Setter TartetName, Property, Value
+	<Grid Margin="4">
+		<ItemsControl ItemsSource="{Binding}">
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<DockPanel Margin="0,0,0,4"
+							   Background="Beige">
+						<Ellipse
+							x:Name="ellipse"
+							Width="16"
+							Height="16"
+							DockPanel.Dock="Left"
+							Fill="Gray"/>
+						<TextBlock x:Name="txt1"
+								   Text="{Binding Name}"/>
+						<TextBlock Text="Testing this out"/>
+					</DockPanel>
+					<DataTemplate.Triggers>
+						<DataTrigger Binding="{Binding Important}"
+									 Value="True">
+							<Setter TargetName="txt1"
+									Property="FontWeight"
+									Value="Bold"/>
+							<Setter TargetName="ellipse"
+									Property="Fill"
+									Value="Red"/>
+						</DataTrigger>
+					</DataTemplate.Triggers>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+	</Grid>
