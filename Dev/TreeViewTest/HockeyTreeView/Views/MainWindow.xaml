@@ -105,7 +105,7 @@
 		</TreeView>
 		<Grid
 			Grid.Column="1"
-			Background="Beige"
+			Background="LightGray"
 			DataContext="{Binding SelectedTeam}">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
