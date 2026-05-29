@@ -1,0 +1,1 @@
+cmd.exe /k winget upgrade Microsoft.PowerShell
