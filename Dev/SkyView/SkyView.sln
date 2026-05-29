@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37301.10
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyView.Web", "SkyView.Web\SkyView.Web.csproj", "{4FC4B922-EC06-4FE7-8DB4-BC80DEFE6A61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyView.Domain", "SkyView.Domain\SkyView.Domain.csproj", "{23EBC34C-9530-4FA6-805C-FBFDF7A86D1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyView.Data", "SkyView.Data\SkyView.Data.csproj", "{241A027A-B7C3-4771-87AC-AEF6211B658E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyView.Services", "SkyView.Services\SkyView.Services.csproj", "{2306E48E-1DE1-4075-AD46-AD248BC0C4BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyView.Services.Tests", "SkyView.Services.Tests\SkyView.Services.Tests.csproj", "{C2E9E61D-2638-4547-BEA6-142F85BA23B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyView.Data.Tests", "SkyView.Data.Tests\SkyView.Data.Tests.csproj", "{8CD4875F-17AA-4BAA-8E37-B6C721B8E6FC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4FC4B922-EC06-4FE7-8DB4-BC80DEFE6A61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FC4B922-EC06-4FE7-8DB4-BC80DEFE6A61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FC4B922-EC06-4FE7-8DB4-BC80DEFE6A61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FC4B922-EC06-4FE7-8DB4-BC80DEFE6A61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23EBC34C-9530-4FA6-805C-FBFDF7A86D1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23EBC34C-9530-4FA6-805C-FBFDF7A86D1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23EBC34C-9530-4FA6-805C-FBFDF7A86D1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23EBC34C-9530-4FA6-805C-FBFDF7A86D1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{241A027A-B7C3-4771-87AC-AEF6211B658E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{241A027A-B7C3-4771-87AC-AEF6211B658E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{241A027A-B7C3-4771-87AC-AEF6211B658E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{241A027A-B7C3-4771-87AC-AEF6211B658E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2306E48E-1DE1-4075-AD46-AD248BC0C4BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2306E48E-1DE1-4075-AD46-AD248BC0C4BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2306E48E-1DE1-4075-AD46-AD248BC0C4BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2306E48E-1DE1-4075-AD46-AD248BC0C4BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2E9E61D-2638-4547-BEA6-142F85BA23B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2E9E61D-2638-4547-BEA6-142F85BA23B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2E9E61D-2638-4547-BEA6-142F85BA23B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2E9E61D-2638-4547-BEA6-142F85BA23B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CD4875F-17AA-4BAA-8E37-B6C721B8E6FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CD4875F-17AA-4BAA-8E37-B6C721B8E6FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CD4875F-17AA-4BAA-8E37-B6C721B8E6FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CD4875F-17AA-4BAA-8E37-B6C721B8E6FC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {924D73DF-24DE-4797-99A4-4A9F67AC92E7}
+	EndGlobalSection
+EndGlobal
