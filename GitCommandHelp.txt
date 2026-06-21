@@ -1,0 +1,5 @@
+git branch -d MY_BRANCH_NAME
+git push origin --delete MY_BRANCH_NAME
+
+git reset --hard
+gi clean -fdx
