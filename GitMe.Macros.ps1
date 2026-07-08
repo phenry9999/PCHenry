@@ -11,7 +11,7 @@ function GitMe-DeleteBranch($branch) {
         git branch -D $branch
         Write-Host "Deleted local branch: $branch"
     } else {
-        Write-Host "Skipping, local branch not found: $branch"
+        Write-Host "Local, skipping, branch not found: $branch"
     }
 
     $remote = git ls-remote --heads origin $branch
@@ -19,6 +19,6 @@ function GitMe-DeleteBranch($branch) {
         git push origin --delete $branch
         Write-Host "Deleted remote branch: $branch"
     } else {
-        Write-Host "Skipping, remote branch not found: $branch"
+        Write-Host "Remoe, skipping, branch not found: $branch"
     }
 }
