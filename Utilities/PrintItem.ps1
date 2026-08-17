@@ -32,7 +32,18 @@ function HtmlEncode([string]$s) {
 
 # --- Fetch work item + comments --------------------------------------------
 $base     = "https://dev.azure.com/$Org/$Proj/_apis/wit/workitems/$Id"
-$wi       = Invoke-RestMethod -Headers $headers -Uri "$base`?`$expand=all&api-version=7.1"
+try {
+    $wi = Invoke-RestMethod -Headers $headers -Uri "$base`?`$expand=all&api-version=7.1"
+}
+catch {
+    if ([int]$_.Exception.Response.StatusCode -in 401, 403, 404) {
+        Write-Warning "Work item $Id does not exist or you do not have permission to read it."
+        exit 1
+    }
+
+    throw
+}
+
 $comments = Invoke-RestMethod -Headers $headers `
              -Uri "https://dev.azure.com/$Org/$Proj/_apis/wit/workItems/$Id/comments?api-version=7.1-preview.4"
 
