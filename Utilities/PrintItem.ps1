@@ -207,11 +207,35 @@ $html = @"
     color: #222;
   }
 
-  h1 {
+  .title-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
     border-bottom: 2px solid #0078d4;
+  }
+
+  h1 {
+    flex: 1;
     padding-bottom: 4px;
     font-size: 20px;
     margin: 0;
+  }
+
+  .company-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    background: #01467d;
+    color: white;
+    padding: 4px 8px 6px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .company-logo {
+    width: 96px;
+    height: auto;
   }
 
   h2 {
@@ -305,6 +329,10 @@ $html = @"
     opacity: 1;
   }
 
+  .footer-separator {
+    margin-top: 5px;
+  }
+
   @media print {
     a {
       color: #000;
@@ -320,6 +348,14 @@ $html = @"
       font-size: 16px;
       margin: 0;
       padding-bottom: 2px;
+    }
+
+    .company-brand {
+      font-size: 15px;
+    }
+
+    .company-logo {
+      width: 82px;
     }
 
     h2 {
@@ -367,7 +403,13 @@ $html = @"
 </head>
 <body>
 
-<h1>#$Id — $($f.'System.Title')</h1>
+<div class='title-row'>
+  <h1>#$Id — $($f.'System.Title')</h1>
+  <div class='company-brand'>
+    <img class='company-logo' src='https://skyspec2.skyworksinc.com/images/SWLogo.png' alt='Skyworks' />
+    <span>SkySpec2</span>
+  </div>
+</div>
 
 <div class='meta'>
   <div class='row'>
@@ -438,10 +480,7 @@ else {
 # --- Related work items -----------------------------------------------------
 $html += "<h2>Related Work Items ($($relatedLinks.Count))</h2>"
 
-if ($relatedLinks.Count -eq 0) {
-    $html += "<div class='empty'>No related work items.</div>"
-}
-else {
+if ($relatedLinks.Count -gt 0) {
     $html += @"
 <table class='grid'>
 <thead>
@@ -504,10 +543,7 @@ else {
 # --- Attachments ------------------------------------------------------------
 $html += "<h2>Attachments ($($attachments.Count))</h2>"
 
-if ($attachments.Count -eq 0) {
-    $html += "<div class='empty'>No attachments.</div>"
-}
-else {
+if ($attachments.Count -gt 0) {
     $html += @"
 <table class='grid'>
 <thead>
@@ -566,7 +602,7 @@ else {
 "@
 }
 
-$html += "</body></html>"
+$html += "<hr class='section-separator footer-separator' /></body></html>"
 
 # --- Save, open, then clean up ---------------------------------------------
 $out = Join-Path $PSScriptRoot "WI-$Id.html"
