@@ -233,11 +233,6 @@ $html = @"
     font-weight: bold;
   }
 
-  .company-logo {
-    width: 96px;
-    height: auto;
-  }
-
   h2 {
     color: #0078d4;
     margin-top: 24px;
@@ -333,6 +328,14 @@ $html = @"
     margin-top: 5px;
   }
 
+  .footer-logo {
+    display: block;
+    width: 96px;
+    height: auto;
+    margin: 5px auto 0;
+    filter: brightness(0);
+  }
+
   @media print {
     a {
       color: #000;
@@ -351,14 +354,17 @@ $html = @"
     }
 
     .company-brand {
-      background: transparent;
-      color: #01467d;
-      font-size: 15px;
+      background: #01467d;
+      color: white;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
 
-    .company-logo {
+    .footer-logo {
+      display: block !important;
+      visibility: visible !important;
+      width: 96px;
       filter: brightness(0);
-      width: 82px;
     }
 
     h2 {
@@ -409,7 +415,6 @@ $html = @"
 <div class='title-row'>
   <h1>#$Id — $($f.'System.Title')</h1>
   <div class='company-brand'>
-    <img class='company-logo' src='https://skyspec2.skyworksinc.com/images/SWLogo.png' alt='Skyworks' />
     <span>SkySpec2</span>
   </div>
 </div>
@@ -605,7 +610,11 @@ if ($attachments.Count -gt 0) {
 "@
 }
 
-$html += "<hr class='section-separator footer-separator' /></body></html>"
+$html += @"
+<hr class='section-separator footer-separator' />
+<img class='footer-logo' src='https://skyspec2.skyworksinc.com/images/SWLogo.png' alt='Skyworks' />
+</body></html>
+"@
 
 # --- Save, open, then clean up ---------------------------------------------
 $out = Join-Path $PSScriptRoot "WI-$Id.html"
