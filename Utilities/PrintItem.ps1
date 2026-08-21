@@ -351,10 +351,13 @@ $html = @"
     }
 
     .company-brand {
+      background: transparent;
+      color: #01467d;
       font-size: 15px;
     }
 
     .company-logo {
+      filter: brightness(0);
       width: 82px;
     }
 
