@@ -55,6 +55,16 @@ $history = Invoke-RestMethod -Headers $headers `
 
 $f = $wi.fields
 
+$createdDate = [DateTimeOffset]::Parse(
+    $f.'System.CreatedDate'
+).ToLocalTime().ToString("dd-MM-yyyy")
+
+$lastEditedDate = [DateTimeOffset]::Parse(
+    $f.'System.ChangedDate'
+).ToLocalTime().ToString("dd-MM-yyyy")
+
+$datePrinted = (Get-Date).ToString("dd-MM-yyyy hh:mm tt")
+
 # --- Build high-level history events ----------------------------------------
 $historyFieldNames = @{
     "System.Title"                    = "Title"
@@ -201,7 +211,7 @@ $html = @"
     border-bottom: 2px solid #0078d4;
     padding-bottom: 4px;
     font-size: 20px;
-    margin: 0 0 12px;
+    margin: 0;
   }
 
   h2 {
@@ -211,33 +221,27 @@ $html = @"
   }
 
   .meta {
-    background: #f3f6fb;
-    padding: 12px;
-    border-radius: 6px;
-    margin-bottom: 16px;
+    display: grid;
+    grid-template-columns: max-content 1fr max-content 1fr max-content 1fr;
+    column-gap: 4px;
+    row-gap: 4px;
+    background: #dadbdb;
+    padding: 6px;
+    border-radius: 3px;
+    margin: 3px 0 0;
   }
 
   .meta .row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    margin: 2px 0;
+    display: contents;
   }
 
-  .meta .row .left {
-    text-align: left;
-  }
-
-  .meta .row .center {
-    text-align: center;
-  }
-
-  .meta .row .right {
+  .meta .label {
+    font-weight: bold;
     text-align: right;
+    white-space: nowrap;
   }
-
   .comment {
-    border-left: 3px solid #0078d4;
-    padding: 6px 12px;
+    padding: 6px 6px;
     margin: 8px 0;
     background: #fafbfc;
   }
@@ -294,6 +298,13 @@ $html = @"
     font-style: italic;
   }
 
+  .section-separator {
+    border: 0;
+    border-top: 2px solid #0078d4;
+    margin: 3px 0 3px;
+    opacity: 1;
+  }
+
   @media print {
     a {
       color: #000;
@@ -307,7 +318,7 @@ $html = @"
 
     h1 {
       font-size: 16px;
-      margin: 0 0 8px;
+      margin: 0;
       padding-bottom: 2px;
     }
 
@@ -316,10 +327,26 @@ $html = @"
       margin-top: 14px;
     }
 
-    .meta {
-      padding: 8px;
-      margin-bottom: 10px;
-    }
+  .meta {
+    display: grid;
+    grid-template-columns: max-content 1fr max-content 1fr max-content 1fr;
+    column-gap: 8px;
+    row-gap: 4px;
+    background: #f3f6fb;
+    padding: 6px;
+    border-radius: 6px;
+    margin: 3px 0 0;
+  }
+
+  .meta .row {
+    display: contents;
+  }
+
+  .meta .label {
+    font-weight: bold;
+    text-align: right;
+    white-space: nowrap;
+  }
 
     .comment {
       padding: 4px 8px;
@@ -344,29 +371,34 @@ $html = @"
 
 <div class='meta'>
   <div class='row'>
-    <span class='left'>
-      <b>Type:</b> $($f.'System.WorkItemType')
-    </span>
-    <span class='center'>
-      <b>State:</b> $($f.'System.State')
-    </span>
-    <span class='right'>
-      <b>Assigned To:</b> $($f.'System.AssignedTo'.displayName)
-    </span>
+    <span class='label'>Type:</span>
+    <span>$($f.'System.WorkItemType')</span>
+    <span class='label'>State:</span>
+    <span>$($f.'System.State')</span>
+    <span class='label'>Assigned To:</span>
+    <span>$($f.'System.AssignedTo'.displayName)</span>
   </div>
 
   <div class='row'>
-    <span class='left'>
-      <b>Iteration:</b> $($f.'System.IterationPath')
-    </span>
-    <span class='center'>
-      <b>Area:</b> $($f.'System.AreaPath')
-    </span>
-    <span class='right'>
-      <b>Tags:</b> $($f.'System.Tags')
-    </span>
+    <span class='label'>Iteration:</span>
+    <span>$($f.'System.IterationPath')</span>
+    <span class='label'>Area:</span>
+    <span>$($f.'System.AreaPath')</span>
+    <span class='label'>Tags:</span>
+    <span>$($f.'System.Tags')</span>
+  </div>
+
+  <div class='row'>
+    <span class='label'>Created:</span>
+    <span>$createdDate</span>
+    <span class='label'>Last Edited:</span>
+    <span>$lastEditedDate</span>
+    <span class='label'>Date Printed:</span>
+    <span>$datePrinted</span>
   </div>
 </div>
+
+<hr class='section-separator' />
 
 <h2>Description</h2>
 $($f.'System.Description')
