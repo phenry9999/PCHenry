@@ -1,0 +1,32 @@
+{
+  "RefreshIntervalMinutes": 1,
+  "StartWidgetWithWindows": false,
+  "WidgetAlwaysOnTop": false,
+  "ShowWidgetOnTaskbar": true,
+  "WidgetLeft": null,
+  "WidgetTop": null,
+  "WidgetWidth": 820,
+  "WidgetHeight": 300,
+  "Endpoints": [
+    {
+      "Name": "Local",
+      "Url": "https://localhost:7163/",
+      "Include": false
+    },
+    {
+      "Name": "Dev",
+      "Url": "https://skyspec2-dev.skyworksinc.com/",
+      "Include": true
+    },
+    {
+      "Name": "Stage",
+      "Url": "https://skyspec2-stage.skyworksinc.com/",
+      "Include": true
+    },
+    {
+      "Name": "Prod",
+      "Url": "https://skyspec2.skyworksinc.com/",
+      "Include": true
+    }
+  ]
+}

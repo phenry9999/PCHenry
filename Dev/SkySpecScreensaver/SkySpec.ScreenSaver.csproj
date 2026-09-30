@@ -1,0 +1,74 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <AssemblyName>SkySpecStatus</AssemblyName>
+    <ApplicationIcon>SkyWorks.ico</ApplicationIcon>
+    <VersionPrefix>1.0.1</VersionPrefix>
+    <Version>$(VersionPrefix).0</Version>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <AssemblyTitle>SkySpec v2 Environments</AssemblyTitle>
+    <Product>$(AssemblyTitle)</Product>
+    <Description>$(AssemblyTitle) screen saver</Description>
+    <RootNamespace>SkySpec.ScreenSaver</RootNamespace>
+    <BuildRevisionFile>$(MSBuildProjectDirectory)\build-revision.txt</BuildRevisionFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="SkySpecStatus.settings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="SkySpecStatus.settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="$(AssemblyName).settings.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <Target Name="GenerateBuildVersion" BeforeTargets="CoreCompile">
+    <ReadLinesFromFile File="$(BuildRevisionFile)">
+      <Output TaskParameter="Lines" PropertyName="BuildRevision" />
+    </ReadLinesFromFile>
+    <PropertyGroup>
+      <BuildRevision Condition="'$(BuildRevision)' == ''">0</BuildRevision>
+      <Version>$(VersionPrefix).$(BuildRevision)</Version>
+      <GeneratedBuildVersionFile>$(IntermediateOutputPath)BuildVersion.g.cs</GeneratedBuildVersionFile>
+    </PropertyGroup>
+    <ItemGroup>
+      <BuildVersionLine Include="using System.Reflection%3B" />
+      <BuildVersionLine Include="[assembly: AssemblyVersion(&quot;$(Version)&quot;)]" />
+      <BuildVersionLine Include="[assembly: AssemblyFileVersion(&quot;$(Version)&quot;)]" />
+      <BuildVersionLine Include="[assembly: AssemblyInformationalVersion(&quot;$(Version)&quot;)]" />
+      <Compile Include="$(GeneratedBuildVersionFile)" />
+    </ItemGroup>
+    <WriteLinesToFile File="$(GeneratedBuildVersionFile)" Lines="@(BuildVersionLine)" Overwrite="true" Encoding="UTF-8" />
+  </Target>
+
+  <Target Name="CreateScreenSaver" AfterTargets="Build">
+    <Copy SourceFiles="$(TargetDir)$(AssemblyName).exe" DestinationFiles="$(TargetDir)$(AssemblyName).scr" />
+  </Target>
+
+  <Target Name="CreatePublishedScreenSaver" AfterTargets="Publish">
+    <Copy SourceFiles="$(PublishDir)$(AssemblyName).exe" DestinationFiles="$(PublishDir)$(AssemblyName).scr" />
+  </Target>
+
+  <Target Name="IncrementBuildRevisionAfterBuild" AfterTargets="Build" Condition="'$(_IsPublishing)' != 'true'">
+    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\Increment-BuildRevision.ps1&quot;" />
+  </Target>
+
+  <Target Name="IncrementBuildRevisionAfterPublish" AfterTargets="Publish">
+    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\Increment-BuildRevision.ps1&quot;" />
+  </Target>
+
+</Project>
