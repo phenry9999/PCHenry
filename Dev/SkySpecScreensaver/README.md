@@ -54,3 +54,8 @@ runtime, settings are loaded in this order:
 
 Saving from the Settings window writes the per-user file and never modifies the
 source-controlled application defaults.
+
+
+To Run ScreenSaver in PS1
+& "C:\GitHub\PCHenry\Dev\SkySpecScreensaver\bin\Debug\net8.0-windows\win-x64\publish\SkySpecStatus.scr" /s
+& "C:\GitHub\PCHenry\Dev\SkySpecScreensaver\bin\Release\net8.0-windows\win-x64\publish\SkySpecStatus.exe" /s

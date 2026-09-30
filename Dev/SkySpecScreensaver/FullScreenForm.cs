@@ -6,7 +6,11 @@ internal sealed class FullScreenForm : Form
     private readonly Action _requestClose;
     private Point? _initialMousePosition;
 
-    public FullScreenForm(Screen screen, bool displayDashboard, Action requestClose)
+    public FullScreenForm(
+        Screen screen,
+        bool displayDashboard,
+        ScreenSaverSettings settings,
+        Action requestClose)
     {
         _requestClose = requestClose;
         Icon = ApplicationBranding.Icon;
@@ -21,7 +25,7 @@ internal sealed class FullScreenForm : Form
         if (displayDashboard)
         {
             _dashboard = new StatusDashboardControl();
-            _dashboard.ApplySettings(ScreenSaverSettings.Load());
+            _dashboard.ApplySettings(settings);
             Controls.Add(_dashboard);
             _dashboard.MouseDown += (_, _) => _requestClose();
             _dashboard.MouseMove += OnMouseMove;
@@ -59,13 +63,26 @@ internal sealed class ScreenSaverApplicationContext : ApplicationContext
 
     public ScreenSaverApplicationContext()
     {
+        var settings = ScreenSaverSettings.Load();
+        var screens = Screen.AllScreens;
+        var dashboardScreen = screens.FirstOrDefault(screen => string.Equals(
+                screen.DeviceName,
+                settings.ScreenSaverMonitorDeviceName,
+                StringComparison.OrdinalIgnoreCase))
+            ?? Screen.PrimaryScreen
+            ?? screens[0];
+
         _inputFilter = new ScreenSaverInputFilter(CloseAll);
         Application.AddMessageFilter(_inputFilter);
         Cursor.Hide();
 
-        foreach (var screen in Screen.AllScreens)
+        foreach (var screen in screens)
         {
-            var form = new FullScreenForm(screen, screen.Primary, CloseAll);
+            var displayDashboard = string.Equals(
+                screen.DeviceName,
+                dashboardScreen.DeviceName,
+                StringComparison.OrdinalIgnoreCase);
+            var form = new FullScreenForm(screen, displayDashboard, settings, CloseAll);
             form.FormClosed += (_, _) => CloseAll();
             _forms.Add(form);
             form.Show();

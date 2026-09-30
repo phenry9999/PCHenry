@@ -4,6 +4,7 @@ internal sealed class SettingsForm : Form {
     private readonly NumericUpDown _refreshInterval = new();
     private readonly CheckBox _startWidgetWithWindows = new();
     private readonly CheckBox _widgetAlwaysOnTop = new();
+    private readonly ComboBox _screenSaverMonitor = new();
     private readonly TextBox[] _urlInputs = new TextBox[4];
     private readonly CheckBox[] _includeInputs = new CheckBox[4];
     private readonly StatusDashboardControl _preview = new();
@@ -65,7 +66,7 @@ internal sealed class SettingsForm : Form {
             Dock = DockStyle.Top,
             AutoSize = true,
             ColumnCount = 3,
-            RowCount = 7,
+            RowCount = 8,
             Padding = new Padding(0, 0, 0, 12)
         };
         options.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
@@ -118,16 +119,52 @@ internal sealed class SettingsForm : Form {
         _refreshInterval.Width = 80;
         options.Controls.Add(_refreshInterval, 1, 4);
 
+        var screens = Screen.AllScreens;
+        options.Controls.Add(
+            new Label {
+                Text = $"Screen saver monitor",
+                AutoSize = true,
+                Anchor = AnchorStyles.Right,
+                TextAlign = ContentAlignment.MiddleRight,
+                Margin = new Padding(3, 7, 12, 7)
+            },
+            0,
+            5);
+
+        _screenSaverMonitor.DropDownStyle = ComboBoxStyle.DropDownList;
+        _screenSaverMonitor.Dock = DockStyle.Left;
+        _screenSaverMonitor.Width = 220;
+        for (var index = 0; index < screens.Length; index++) {
+            var screen = screens[index];
+            _screenSaverMonitor.Items.Add(
+                new MonitorOption(
+                    screen.DeviceName,
+                    $"Monitor {index + 1}{(screen.Primary ? " (Primary)" : string.Empty)}"));
+        }
+
+        var selectedMonitorIndex = _screenSaverMonitor.Items
+            .Cast<MonitorOption>()
+            .Select((monitor, index) => new { monitor, index })
+            .FirstOrDefault(item => string.Equals(
+                item.monitor.DeviceName,
+                settings.ScreenSaverMonitorDeviceName,
+                StringComparison.OrdinalIgnoreCase))
+            ?.index;
+        _screenSaverMonitor.SelectedIndex = selectedMonitorIndex
+            ?? Array.FindIndex(screens, screen => screen.Primary);
+        options.Controls.Add(_screenSaverMonitor, 1, 5);
+        options.SetColumnSpan(_screenSaverMonitor, 2);
+
         _startWidgetWithWindows.Text = "Start desktop widget when I sign in to Windows";
         _startWidgetWithWindows.Checked = settings.StartWidgetWithWindows;
         _startWidgetWithWindows.AutoSize = true;
-        options.Controls.Add(_startWidgetWithWindows, 1, 5);
+        options.Controls.Add(_startWidgetWithWindows, 1, 6);
         options.SetColumnSpan(_startWidgetWithWindows, 2);
 
         _widgetAlwaysOnTop.Text = "Keep desktop widget above other windows";
         _widgetAlwaysOnTop.Checked = settings.WidgetAlwaysOnTop;
         _widgetAlwaysOnTop.AutoSize = true;
-        options.Controls.Add(_widgetAlwaysOnTop, 1, 6);
+        options.Controls.Add(_widgetAlwaysOnTop, 1, 7);
         options.SetColumnSpan(_widgetAlwaysOnTop, 2);
 
         return options;
@@ -160,6 +197,8 @@ internal sealed class SettingsForm : Form {
             StartWidgetWithWindows = _startWidgetWithWindows.Checked,
             WidgetAlwaysOnTop = _widgetAlwaysOnTop.Checked,
             ShowWidgetOnTaskbar = _loadedSettings.ShowWidgetOnTaskbar,
+            ScreenSaverMonitorDeviceName =
+                (_screenSaverMonitor.SelectedItem as MonitorOption)?.DeviceName,
             WidgetLeft = _loadedSettings.WidgetLeft,
             WidgetTop = _loadedSettings.WidgetTop,
             WidgetWidth = _loadedSettings.WidgetWidth,
@@ -197,5 +236,9 @@ internal sealed class SettingsForm : Form {
         catch (System.Security.SecurityException exception) {
             MessageBox.Show(this, exception.Message, "Could not update Windows startup", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+    }
+
+    private sealed record MonitorOption(string DeviceName, string DisplayName) {
+        public override string ToString() => DisplayName;
     }
 }

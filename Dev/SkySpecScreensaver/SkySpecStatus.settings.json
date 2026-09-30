@@ -3,6 +3,7 @@
   "StartWidgetWithWindows": false,
   "WidgetAlwaysOnTop": false,
   "ShowWidgetOnTaskbar": true,
+  "ScreenSaverMonitorDeviceName": null,
   "WidgetLeft": null,
   "WidgetTop": null,
   "WidgetWidth": 820,

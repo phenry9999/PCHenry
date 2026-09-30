@@ -15,6 +15,8 @@ internal sealed class ScreenSaverSettings {
 
     public bool ShowWidgetOnTaskbar { get; set; } = true;
 
+    public string? ScreenSaverMonitorDeviceName { get; set; }
+
     public int? WidgetLeft { get; set; }
 
     public int? WidgetTop { get; set; }
