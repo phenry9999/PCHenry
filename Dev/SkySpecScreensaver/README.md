@@ -21,8 +21,8 @@ directory. Test each native screen saver mode with:
 ```
 
 `/c` opens the configuration window with its live preview. `/s` opens the
-full-screen display. Windows invokes `/p <window-handle>` for its embedded
-Screen Saver Settings preview.
+full-screen display. Embedded Windows Screen Saver Settings preview requests
+exit without opening a window.
 
 ## Install
 

@@ -12,11 +12,10 @@ internal static class Program
             var command = ScreenSaverCommand.Parse(args);
             switch (command.Mode)
             {
+                case ScreenSaverMode.None:
+                    break;
                 case ScreenSaverMode.Configure:
                     Application.Run(new SettingsForm());
-                    break;
-                case ScreenSaverMode.Preview when command.PreviewHandle != IntPtr.Zero:
-                    Application.Run(new PreviewForm(command.PreviewHandle));
                     break;
                 case ScreenSaverMode.FullScreen:
                     Application.Run(new ScreenSaverApplicationContext());
