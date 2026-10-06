@@ -1,0 +1,159 @@
+<Project>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AssemblyName>Skyworks.ScreenSaver</AssemblyName>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <VersionPrefix>1.0.1</VersionPrefix>
+    <Version>$(VersionPrefix).0</Version>
+    <BuildRevisionFile>$(MSBuildProjectDirectory)\build-revision.txt</BuildRevisionFile>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Skyworks.ScreenSaver.Core\Skyworks.ScreenSaver.Core.csproj" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3537.50" />
+    <EmbeddedResource Include="..\Assets\Links.json" Link="Assets\Links.json" LogicalName="Skyworks.ScreenSaver.Links.json" />
+    <EmbeddedResource Include="..\Assets\**\*.jpg;..\Assets\**\*.jpeg;..\Assets\**\*.png;..\Assets\**\*.bmp;..\Assets\**\*.gif"
+                      Link="Assets\%(RecursiveDir)%(Filename)%(Extension)"
+                      LogicalName="Skyworks.ScreenSaver.Assets.%(RecursiveDir)%(Filename)%(Extension)" />
+    <UpToDateCheckInput Include="$(BuildRevisionFile)" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Skyworks.ScreenSaver.SmokeTests" />
+  </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+  <!-- Filter after NuGet imports during evaluation, including Visual Studio design-time evaluation. -->
+  <ItemGroup>
+    <Reference Remove="@(Reference->WithMetadataValue('Filename', 'Microsoft.Web.WebView2.Wpf'))" />
+    <Content Include="$(IntermediateOutputPath)build-revision.txt" Link="build-revision.txt" CopyToOutputDirectory="Always" CopyToPublishDirectory="Always" ExcludeFromSingleFile="true" />
+  </ItemGroup>
+  <UsingTask TaskName="IncrementScreenSaverRevision" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <RevisionFile ParameterType="System.String" Required="true" />
+      <Revision ParameterType="System.String" Output="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Globalization" />
+      <Using Namespace="System.Threading" />
+      <Code Type="Method" Language="cs"><![CDATA[
+      public override bool Execute()
+      {
+        string temporary = null;
+        try
+        {
+            using (var guard = new FileStream(RevisionFile + ".lock", FileMode.OpenOrCreate,
+                FileAccess.ReadWrite, FileShare.ReadWrite))
+            {
+                bool acquired = false;
+                for (int attempt = 0; attempt < 200; attempt++)
+                {
+                    try { guard.Lock(0, 1); acquired = true; break; }
+                    catch (IOException) { Thread.Sleep(50); }
+                }
+                if (!acquired)
+                {
+                    Log.LogError("Timed out locking build revision file: {0}", RevisionFile);
+                    return false;
+                }
+                try
+                {
+                    string text = File.ReadAllText(RevisionFile).Trim();
+                    int current;
+                    if (!System.Text.RegularExpressions.Regex.IsMatch(text, "^[0-9]{1,5}$")
+                        || !int.TryParse(text, NumberStyles.None, CultureInfo.InvariantCulture, out current)
+                        || current > 65534)
+                    {
+                        Log.LogError("Invalid build revision in {0}. Expected one integer from 0 to 65534.", RevisionFile);
+                        return false;
+                    }
+                    if (current == 65534)
+                    {
+                        Log.LogError("Build revision exhausted at 65534 in {0}; automatic wrapping is not allowed.", RevisionFile);
+                        return false;
+                    }
+                    Revision = (current + 1).ToString(CultureInfo.InvariantCulture);
+                    temporary = RevisionFile + "." + Guid.NewGuid().ToString("N") + ".tmp";
+                    File.WriteAllText(temporary, Revision + Environment.NewLine);
+                    File.Replace(temporary, RevisionFile, null);
+                    temporary = null;
+                }
+                finally { guard.Unlock(0, 1); }
+            }
+            return true;
+        }
+        catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
+        {
+            Log.LogError("Cannot increment build revision {0}: {1}", RevisionFile, ex.Message);
+            return false;
+        }
+        finally
+        {
+            if (temporary != null)
+            {
+                try { File.Delete(temporary); }
+                catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
+                { Log.LogWarning("Cannot remove revision temporary file {0}: {1}", temporary, ex.Message); }
+            }
+        }
+      }
+      ]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="IncrementBuildRevision" BeforeTargets="BeforeBuild" Condition="'$(DesignTimeBuild)' != 'true'">
+    <IncrementScreenSaverRevision RevisionFile="$(BuildRevisionFile)">
+      <Output TaskParameter="Revision" PropertyName="BuildRevision" />
+    </IncrementScreenSaverRevision>
+  </Target>
+  <Target Name="GenerateBuildVersion" BeforeTargets="GenerateAssemblyInfo;CoreCompile;GetCopyToOutputDirectoryItems">
+    <Error Condition="!Exists('$(BuildRevisionFile)')" Text="Missing build revision file: $(BuildRevisionFile). Expected one integer from 0 to 65534." />
+    <ReadLinesFromFile File="$(BuildRevisionFile)" Condition="'$(BuildRevision)' == ''">
+      <Output TaskParameter="Lines" PropertyName="BuildRevision" />
+    </ReadLinesFromFile>
+    <PropertyGroup>
+      <BuildRevision>$(BuildRevision.Trim())</BuildRevision>
+    </PropertyGroup>
+    <Error Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(BuildRevision)', '^[0-9]{1,5}$'))" Text="Invalid build revision in $(BuildRevisionFile). Expected one integer from 0 to 65534." />
+    <Error Condition="$([System.Int32]::Parse('$(BuildRevision)')) &gt; 65534" Text="Build revision in $(BuildRevisionFile) exceeds 65534." />
+    <Error Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(VersionPrefix)', '^[0-9]{1,5}\.[0-9]{1,5}\.[0-9]{1,5}$'))" Text="VersionPrefix must contain exactly three nonnegative integer components." />
+    <Error Condition="$([System.Version]::Parse('$(VersionPrefix).0').Major) &gt; 65534 Or $([System.Version]::Parse('$(VersionPrefix).0').Minor) &gt; 65534 Or $([System.Version]::Parse('$(VersionPrefix).0').Build) &gt; 65534" Text="Each VersionPrefix component must be at most 65534." />
+    <PropertyGroup>
+      <BuildRevision>$([System.Int32]::Parse('$(BuildRevision)'))</BuildRevision>
+      <Version>$([System.Version]::Parse('$(VersionPrefix).$(BuildRevision)').ToString(4))</Version>
+      <AssemblyVersion>$(Version)</AssemblyVersion>
+      <FileVersion>$(Version)</FileVersion>
+      <InformationalVersion>$(Version)</InformationalVersion>
+      <GeneratedBuildVersionFile>$(IntermediateOutputPath)BuildVersion.g.cs</GeneratedBuildVersionFile>
+    </PropertyGroup>
+    <ItemGroup>
+      <BuildVersionLine Include="using System.Reflection%3B" />
+      <BuildVersionLine Include="[assembly: AssemblyVersion(&quot;$(Version)&quot;)]" />
+      <BuildVersionLine Include="[assembly: AssemblyFileVersion(&quot;$(Version)&quot;)]" />
+      <BuildVersionLine Include="[assembly: AssemblyInformationalVersion(&quot;$(Version)&quot;)]" />
+      <Compile Include="$(GeneratedBuildVersionFile)" />
+    </ItemGroup>
+    <WriteLinesToFile File="$(GeneratedBuildVersionFile)" Lines="@(BuildVersionLine)" Overwrite="true" WriteOnlyWhenDifferent="true" Encoding="UTF-8" />
+    <WriteLinesToFile File="$(IntermediateOutputPath)build-revision.txt" Lines="$(BuildRevision)" Overwrite="true" WriteOnlyWhenDifferent="true" />
+  </Target>
+  <Target Name="CreateScreenSaver" AfterTargets="Publish">
+    <Copy SourceFiles="$(PublishDir)$(AssemblyName).exe" DestinationFiles="$(PublishDir)$(AssemblyName).scr" />
+    <WriteLinesToFile File="$(PublishDir)Skyworks.ScreenSaver.deployment" Lines="Skyworks.ScreenSaver self-contained win-x64" Overwrite="true" Condition="'$(SelfContained)' == 'true' And '$(PublishSingleFile)' == 'true' And '$(RuntimeIdentifier)' == 'win-x64'" />
+    <Delete Files="$(PublishDir)Skyworks.ScreenSaver.deployment" Condition="'$(SelfContained)' != 'true' Or '$(PublishSingleFile)' != 'true' Or '$(RuntimeIdentifier)' != 'win-x64'" />
+  </Target>
+  <Target Name="CreateDevelopmentScreenSaver" AfterTargets="Build">
+    <Copy SourceFiles="$(TargetDir)$(AssemblyName).exe" DestinationFiles="$(TargetDir)$(AssemblyName).scr" />
+  </Target>
+</Project>

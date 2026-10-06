@@ -1,0 +1,5 @@
+**/bin/
+**/obj/
+Skyworks.ScreenSaver.SmokeTests/build/
+publish/
+.vs/
