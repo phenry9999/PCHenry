@@ -49,8 +49,7 @@ public static class ScreenSaverRegistration
             throw new InvalidOperationException("The installation directory cannot be inside the source deployment.");
         var installedSettings = new SaverSettings
         {
-            RefreshMinutes = settings.RefreshMinutes,
-            RotationSeconds = settings.RotationSeconds,
+            RefreshSeconds = settings.RefreshSeconds,
             CaptureTimeoutSeconds = settings.CaptureTimeoutSeconds
         };
         // An already installed version needs no copying, so running executables are never overwritten.

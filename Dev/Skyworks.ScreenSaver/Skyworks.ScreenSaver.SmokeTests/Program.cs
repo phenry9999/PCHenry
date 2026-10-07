@@ -371,7 +371,7 @@ internal static class Program
         ((Button)dialog.AcceptButton!).PerformClick();
         Require(!dialog.Visible, "Actual settings Save did not succeed.");
         var reopened = store.Load();
-        Require(reopened.RefreshMinutes == settings.RefreshMinutes, "Save/Load changed refresh settings.");
+        Require(reopened.RefreshSeconds == settings.RefreshSeconds, "Save/Load changed refresh settings.");
         Console.WriteLine($"  embedded Assets\\Links.json: {parsed.Urls.Count} eligible URL entries; Save/Load verified");
     }
 
@@ -388,10 +388,16 @@ internal static class Program
                 && typeof(SettingsDialog).GetField("assets", BindingFlags.NonPublic | BindingFlags.Instance) is null
                 && !Descendants(dialog).OfType<Label>().Any(label => label.Text == "Assets directory"),
                 "Settings still exposes a configurable Assets directory.");
+            var settingLabels = Descendants(dialog).OfType<Label>().Select(label => label.Text).ToArray();
+            Require(settingLabels.Contains("Refresh interval (seconds)")
+                && !settingLabels.Contains("Webpage refresh (minutes)")
+                && !settingLabels.Contains("Image rotation (seconds)"),
+                "Settings GUI does not expose one shared image/webpage refresh interval.");
             Require(Descendants(dialog).OfType<Button>().Any(button => button.Text == "Set as Windows screensaver"),
                 "Settings GUI lacks the Set as Windows screensaver button.");
             ((Button)dialog.AcceptButton!).PerformClick();
             Require(File.Exists(store.SettingsPath), "Settings GUI Save did not persist isolated settings.");
+            Require(store.Load().RefreshSeconds == 30, "Settings GUI did not save the default shared refresh interval.");
             Require(!dialog.Visible, "Successful settings Save did not close the dialog.");
         }
         Require(!File.ReadAllText(store.SettingsPath).Contains("LinksPath"), "Settings still persists a URL path.");
@@ -793,8 +799,10 @@ internal static class Program
         nint parentHandle = parent.Handle;
         using var context = new SaverContext(new SaverSettings
         {
-            RotationSeconds = 3600
+            RefreshSeconds = 3600
         }, log, parentHandle);
+        Require(Field<System.Windows.Forms.Timer>(context, "rotationTimer").Interval == 3_600_000,
+            "Image rotation timer did not use the shared refresh interval.");
         bool exited = false;
         context.ThreadExit += (_, _) => exited = true;
         var windows = Field<List<ImageWindow>>(context, "windows");

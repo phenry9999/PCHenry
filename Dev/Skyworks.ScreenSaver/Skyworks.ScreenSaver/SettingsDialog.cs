@@ -4,8 +4,7 @@ namespace Skyworks.ScreenSaver;
 
 internal sealed class SettingsDialog : Form
 {
-    private readonly NumericUpDown refresh = new() { Minimum = 1, Maximum = 1440 };
-    private readonly NumericUpDown rotation = new() { Minimum = 5, Maximum = 3600 };
+    private readonly NumericUpDown refresh = new() { Minimum = 5, Maximum = 86400 };
     private readonly NumericUpDown timeout = new() { Minimum = 10, Maximum = 180 };
     private readonly SettingsStore store;
     private readonly DiagnosticLog log;
@@ -17,20 +16,19 @@ internal sealed class SettingsDialog : Form
         Text = "Skyworks screensaver settings";
         StartPosition = FormStartPosition.CenterScreen;
         AutoScaleMode = AutoScaleMode.Dpi;
-        ClientSize = new Size(650, 329);
-        MinimumSize = new Size(550, 329);
-        var layout = new TableLayoutPanel { Dock = DockStyle.Fill, Padding = new Padding(16), ColumnCount = 2, RowCount = 6 };
+        ClientSize = new Size(650, 291);
+        MinimumSize = new Size(550, 291);
+        var layout = new TableLayoutPanel { Dock = DockStyle.Fill, Padding = new Padding(16), ColumnCount = 2, RowCount = 5 };
         layout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 205));
         layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
-        AddRow(layout, 0, "Webpage refresh (minutes)", refresh);
-        AddRow(layout, 1, "Image rotation (seconds)", rotation);
-        AddRow(layout, 2, "Capture timeout (seconds)", timeout);
+        AddRow(layout, 0, "Refresh interval (seconds)", refresh);
+        AddRow(layout, 1, "Capture timeout (seconds)", timeout);
         var description = new Label
         {
-            Text = "Backgrounds and the webpage list are built into the application. Each image change updates only one monitor. Webpages are captured at startup and on the refresh schedule.",
+            Text = "Backgrounds and the webpage list are built into the application. Images rotate and webpages refresh on the same interval. Each image change updates only one monitor.",
             Dock = DockStyle.Fill, AutoSize = true, Padding = new Padding(0, 10, 0, 10)
         };
-        layout.Controls.Add(description, 0, 3);
+        layout.Controls.Add(description, 0, 2);
         layout.SetColumnSpan(description, 2);
         var buttons = new FlowLayoutPanel { Dock = DockStyle.Fill, AutoSize = true };
         var save = new Button { Text = "Save", AutoSize = true };
@@ -53,7 +51,7 @@ internal sealed class SettingsDialog : Form
         };
         var cancel = new Button { Text = "Cancel", AutoSize = true, DialogResult = DialogResult.Cancel };
         buttons.Controls.AddRange([save, preview, diagnostics, cancel]);
-        layout.Controls.Add(buttons, 0, 4);
+        layout.Controls.Add(buttons, 0, 3);
         layout.SetColumnSpan(buttons, 2);
         var install = new Button { Text = "Set as Windows screensaver", AutoSize = true, Anchor = AnchorStyles.Left };
         install.Click += (_, _) =>
@@ -73,13 +71,12 @@ internal sealed class SettingsDialog : Form
                 MessageBox.Show(this, ex.Message, "Set as Windows screensaver", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         };
-        layout.Controls.Add(install, 0, 5);
+        layout.Controls.Add(install, 0, 4);
         layout.SetColumnSpan(install, 2);
         Controls.Add(layout);
         AcceptButton = save;
         CancelButton = cancel;
-        refresh.Value = settings.RefreshMinutes;
-        rotation.Value = settings.RotationSeconds;
+        refresh.Value = settings.RefreshSeconds;
         timeout.Value = settings.CaptureTimeoutSeconds;
         if (warning is not null) Shown += (_, _) => MessageBox.Show(this, warning, "Settings could not be loaded", MessageBoxButtons.OK, MessageBoxIcon.Warning);
     }
@@ -116,7 +113,7 @@ internal sealed class SettingsDialog : Form
 
     private SaverSettings ReadSettings() => new()
     {
-        RefreshMinutes = (int)refresh.Value, RotationSeconds = (int)rotation.Value,
+        RefreshSeconds = (int)refresh.Value,
         CaptureTimeoutSeconds = (int)timeout.Value
     };
 }

@@ -71,7 +71,7 @@ internal sealed class SaverContext : ApplicationContext
             webpages.Replace(cached);
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) { log.Write("Cannot load previous screenshots.", ex); }
-        rotationTimer.Interval = checked(settings.RotationSeconds * 1000);
+        rotationTimer.Interval = checked(settings.RefreshSeconds * 1000);
         rotationTimer.Tick += (_, _) =>
         {
             int monitor = monitors.Next();
@@ -162,7 +162,7 @@ internal sealed class SaverContext : ApplicationContext
         var token = cancellation.Token;
         try
         {
-            using var cadence = new PeriodicTimer(TimeSpan.FromMinutes(settings.RefreshMinutes));
+            using var cadence = new PeriodicTimer(TimeSpan.FromSeconds(settings.RefreshSeconds));
             do
             {
                 try
@@ -176,7 +176,7 @@ internal sealed class SaverContext : ApplicationContext
                     foreach (var target in parsed.Targets)
                     {
                         token.ThrowIfCancellationRequested();
-                        // A common viewport avoids reserving a monitor while the independent image timer rotates.
+                        // A common viewport avoids reserving a monitor while image rotation continues.
                         var page = await capture!.CaptureTargetAsync(target, captureViewport, TimeSpan.FromSeconds(settings.CaptureTimeoutSeconds), token);
                         if (page is null || token.IsCancellationRequested) continue;
                         string path = page.FilePath;

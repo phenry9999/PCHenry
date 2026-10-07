@@ -27,8 +27,7 @@ void WithDirectory(Action<string> body) {
 Test("Settings defaults", () => {
     var settings = new SaverSettings();
     settings.Validate();
-    Equal(2, settings.RefreshMinutes);
-    Equal(30, settings.RotationSeconds);
+    Equal(30, settings.RefreshSeconds);
     Equal(45, settings.CaptureTimeoutSeconds);
     Equal(null, typeof(SaverSettings).GetProperty("LinksPath"));
     Equal(null, typeof(SaverSettings).GetProperty("AssetsPath"));
@@ -36,8 +35,7 @@ Test("Settings defaults", () => {
 
 foreach (var (name, set, minimum, maximum) in new (string, Action<SaverSettings, int>, int, int)[]
 {
-    ("RefreshMinutes", (s, v) => s.RefreshMinutes = v, 1, 1440),
-    ("RotationSeconds", (s, v) => s.RotationSeconds = v, 5, 3600),
+    ("RefreshSeconds", (s, v) => s.RefreshSeconds = v, 5, 86400),
     ("CaptureTimeoutSeconds", (s, v) => s.CaptureTimeoutSeconds = v, 10, 180)
 }) {
     foreach (int value in new[] { minimum, maximum })
@@ -60,27 +58,26 @@ Test("Default settings store location", () => {
 Test("Missing settings return fresh defaults without creating data", () => WithDirectory(root => {
     string missing = Path.Combine(root, "missing");
     var store = new SettingsStore(missing);
-    Equal(2, store.Load().RefreshMinutes);
+    Equal(30, store.Load().RefreshSeconds);
     Equal(false, Directory.Exists(missing));
     Directory.CreateDirectory(missing);
-    store.Load().RefreshMinutes = 999;
-    Equal(2, store.Load().RefreshMinutes);
+    store.Load().RefreshSeconds = 999;
+    Equal(30, store.Load().RefreshSeconds);
     Equal(false, File.Exists(store.SettingsPath));
 }));
 
 Test("Settings save, load and replacement round trip", () => WithDirectory(root => {
     var store = new SettingsStore(Path.Combine(root, "settings"));
     var s = new SaverSettings {
-        RefreshMinutes = 120, RotationSeconds = 50, CaptureTimeoutSeconds = 90
+        RefreshSeconds = 50, CaptureTimeoutSeconds = 90
     };
     store.Save(s);
     SaverSettings actual = new SettingsStore(store.DirectoryPath).Load();
-    Equal(s.RefreshMinutes, actual.RefreshMinutes);
-    Equal(s.RotationSeconds, actual.RotationSeconds);
+    Equal(s.RefreshSeconds, actual.RefreshSeconds);
     Equal(s.CaptureTimeoutSeconds, actual.CaptureTimeoutSeconds);
-    s.RefreshMinutes = 1440;
+    s.RefreshSeconds = 86400;
     store.Save(s);
-    Equal(1440, store.Load().RefreshMinutes);
+    Equal(86400, store.Load().RefreshSeconds);
     Equal(1, Directory.GetFiles(store.DirectoryPath).Length);
 }));
 
@@ -88,7 +85,7 @@ Test("Invalid save preserves previously saved settings", () => WithDirectory(roo
     var store = new SettingsStore(root);
     store.Save(new());
     string before = File.ReadAllText(store.SettingsPath);
-    Throws<ArgumentException>(() => store.Save(new() { RefreshMinutes = 0 }));
+    Throws<ArgumentException>(() => store.Save(new() { RefreshSeconds = 0 }));
     Throws<ArgumentNullException>(() => store.Save(null!));
     Equal(before, File.ReadAllText(store.SettingsPath));
     Equal(1, Directory.GetFiles(root).Length);
@@ -96,7 +93,7 @@ Test("Invalid save preserves previously saved settings", () => WithDirectory(roo
 
 Test("Invalid settings are not rewritten by migration", () => WithDirectory(root => {
     var store = new SettingsStore(root);
-    string invalid = "{\"LinksPath\":\"Link.txt\",\"RefreshMinutes\":0}";
+    string invalid = "{\"LinksPath\":\"Link.txt\",\"RefreshSeconds\":0}";
     File.WriteAllText(store.SettingsPath, invalid);
     Throws<InvalidDataException>(() => store.Load());
     Equal(invalid, File.ReadAllText(store.SettingsPath));
@@ -104,10 +101,11 @@ Test("Invalid settings are not rewritten by migration", () => WithDirectory(root
 
 foreach (string json in new[]
 {
-    "", "{", "null", "[]", "true", "{\"RefreshMinutes\":\"sixty\"}",
-    "{\"RefreshMinutes\":0}", "{\"RotationSeconds\":3601}", "{\"CaptureTimeoutSeconds\":9}",
+    "", "{", "null", "[]", "true", "{\"RefreshSeconds\":\"sixty\"}",
+    "{\"RefreshSeconds\":0}", "{\"RotationSeconds\":3601}", "{\"RefreshMinutes\":0,\"RotationSeconds\":30}",
+    "{\"CaptureTimeoutSeconds\":9}",
     "{\"Unknown\":1}",
-    "{\"RefreshMinutes\":999999999999999999999999999}"
+    "{\"RefreshSeconds\":999999999999999999999999999}"
 })
     Test($"Malformed settings report error: {json}", () => WithDirectory(root => {
         var store = new SettingsStore(root);
@@ -124,9 +122,31 @@ foreach (string json in new[]
 
 Test("Partial settings keep defaults and accept case-insensitive names", () => WithDirectory(root => {
     var store = new SettingsStore(root);
-    File.WriteAllText(store.SettingsPath, "{\"refreshminutes\":20}");
-    Equal(20, store.Load().RefreshMinutes);
-    Equal(30, store.Load().RotationSeconds);
+    File.WriteAllText(store.SettingsPath, "{\"refreshseconds\":20}");
+    Equal(20, store.Load().RefreshSeconds);
+}));
+
+Test("Legacy image rotation migrates to shared refresh interval", () => WithDirectory(root => {
+    var store = new SettingsStore(root);
+    File.WriteAllText(store.SettingsPath, "{\"RefreshMinutes\":2,\"RotationSeconds\":30,\"CaptureTimeoutSeconds\":45}");
+    Equal(30, store.Load().RefreshSeconds);
+    string migrated = File.ReadAllText(store.SettingsPath);
+    Equal(true, migrated.Contains("\"RefreshSeconds\": 30", StringComparison.Ordinal));
+    Equal(false, migrated.Contains("RefreshMinutes", StringComparison.Ordinal));
+    Equal(false, migrated.Contains("RotationSeconds", StringComparison.Ordinal));
+}));
+
+Test("Legacy webpage interval migrates when no image rotation was saved", () => WithDirectory(root => {
+    var store = new SettingsStore(root);
+    File.WriteAllText(store.SettingsPath, "{\"refreshminutes\":5}");
+    Equal(300, store.Load().RefreshSeconds);
+    Equal(300, new SettingsStore(root).Load().RefreshSeconds);
+}));
+
+Test("Current shared interval takes precedence over legacy timing fields", () => WithDirectory(root => {
+    var store = new SettingsStore(root);
+    File.WriteAllText(store.SettingsPath, "{\"RefreshSeconds\":40,\"RefreshMinutes\":5,\"RotationSeconds\":60}");
+    Equal(40, store.Load().RefreshSeconds);
 }));
 
 foreach (string oldAsset in new[] { "\"C:\\\\old-assets\"", "\" \"", "null" })
@@ -135,12 +155,11 @@ foreach (string oldAsset in new[] { "\"C:\\\\old-assets\"", "\" \"", "null" })
         File.WriteAllText(store.SettingsPath,
             "{\"RefreshMinutes\":90,\"RotationSeconds\":45,\"LinksPath\":\"custom.json\",\"aSsetsPath\":" + oldAsset + "}");
         var settings = store.Load();
-        Equal(90, settings.RefreshMinutes);
-        Equal(45, settings.RotationSeconds);
+        Equal(45, settings.RefreshSeconds);
         Equal(null, typeof(SaverSettings).GetProperty("LinksPath"));
         Equal(false, File.ReadAllText(store.SettingsPath).Contains("AssetsPath", StringComparison.OrdinalIgnoreCase));
         Equal(false, File.ReadAllText(store.SettingsPath).Contains("LinksPath", StringComparison.OrdinalIgnoreCase));
-        Equal(90, store.Load().RefreshMinutes);
+        Equal(45, store.Load().RefreshSeconds);
     }));
 
 Test("No arguments selects settings", () => Equal(new LaunchOptions(SaverMode.Settings, 0), LaunchOptions.Parse([])));
